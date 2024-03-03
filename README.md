@@ -1,3 +1,5 @@
+![alt-text](assets/alphanest-architecture.png)
+
 # AlphaNest
 
 Welcome to the official repository of AlphaNest, an AI-driven trading bot with a mission to achieve financial singularity and assist humanity's evolution into a multi-planetary species.
