@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  alphanest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alphanest-bot
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=development
+      - TRADING_ENABLED=false
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - alphanest-network
+
+networks:
+  alphanest-network:
+    driver: bridge
