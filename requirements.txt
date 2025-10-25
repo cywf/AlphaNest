@@ -1,0 +1,28 @@
+# Core dependencies
+python-dateutil>=2.8.2
+pytz>=2023.3
+
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# API clients (optional, for production use)
+# openai>=1.0.0
+# yfinance>=0.2.0
+# alpaca-trade-api>=3.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+
+# Linting and formatting
+pylint>=2.17.0
+black>=23.7.0
+flake8>=6.1.0
+
+# Type checking
+mypy>=1.4.0
