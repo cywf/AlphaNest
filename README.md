@@ -36,6 +36,10 @@ python -m alphanest.core.bot
 - ☁️ **AWS Ready**: Terraform infrastructure for cloud deployment
 - 🧪 **Well Tested**: Comprehensive test suite with pytest
 
+## Live Codebase Mindmap
+Auto-generated on each push: **repo-map.html** (via GitHub Pages and CI artifact).
+When Pages is enabled, it will be served at: `https://cywf.github.io/AlphaNest/repo-map.html`
+
 ## Explore AlphaNest
 - [Wiki](https://github.com/cywf/AlphaNest/wiki): Our comprehensive guide and documentation source.
 - [Issues](https://github.com/cywf/AlphaNest/issues): For tracking bugs and feature requests.

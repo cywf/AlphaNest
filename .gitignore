@@ -85,3 +85,6 @@ temp/
 *.key
 secrets/
 credentials/
+
+# Generated markmap artifacts
+markmap/
