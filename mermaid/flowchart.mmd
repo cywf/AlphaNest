@@ -25,9 +25,11 @@ f_infra_terraform_providers_tf["providers.tf"]
 f_infra_terraform_variables_tf["variables.tf"]
 f_LICENSE["LICENSE"]
 d_mermaid["mermaid/"]:::dir
+f_mermaid_architecture_mmd["architecture.mmd"]
 f_mermaid_bpmnish_mmd["bpmnish.mmd"]
 f_mermaid_ci_sequence_mmd["ci-sequence.mmd"]
 f_mermaid_er_mmd["er.mmd"]
+f_mermaid_flowchart_mmd["flowchart.mmd"]
 f_README_md["README.md"]
 f_requirements_txt["requirements.txt"]
 f_run_py["run.py"]
@@ -89,9 +91,11 @@ d_infra_terraform --> f_infra_terraform_providers_tf
 d_infra_terraform --> f_infra_terraform_variables_tf
 d__ --> f_LICENSE
 d__ --> d_mermaid
+d_mermaid --> f_mermaid_architecture_mmd
 d_mermaid --> f_mermaid_bpmnish_mmd
 d_mermaid --> f_mermaid_ci_sequence_mmd
 d_mermaid --> f_mermaid_er_mmd
+d_mermaid --> f_mermaid_flowchart_mmd
 d__ --> f_README_md
 d__ --> f_requirements_txt
 d__ --> f_run_py
