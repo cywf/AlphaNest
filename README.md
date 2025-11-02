@@ -9,7 +9,7 @@ AlphaNest combines state-of-the-art artificial intelligence with real-time marke
 
 ## 🚀 Quick Start
 
-**[Get Started →](GETTING_STARTED.md)** | [Documentation](docs/) | [Wiki](https://github.com/cywf/AlphaNest/wiki)
+**[Get Started →](GETTING_STARTED.md)** | [Documentation](docs/) | [Wiki](https://github.com/cywf/AlphaNest/wiki) | **[🌐 Live Site →](https://cywf.github.io/AlphaNest/)**
 
 ```bash
 # Clone and setup
@@ -39,6 +39,44 @@ python -m alphanest.core.bot
 ## Live Codebase Mindmap
 Auto-generated on each push: **repo-map.html** (via GitHub Pages and CI artifact).
 When Pages is enabled, it will be served at: `https://cywf.github.io/AlphaNest/repo-map.html`
+
+## 🌐 AlphaNest Website
+
+Visit our comprehensive website at **[https://cywf.github.io/AlphaNest/](https://cywf.github.io/AlphaNest/)** featuring:
+
+- 📊 **Statistics Dashboard**: Live repository metrics, language breakdown, and commit activity
+- 💬 **Discussions**: Browse and participate in community discussions
+- 📋 **Development Board**: Track project progress and roadmap
+- 📚 **Documentation**: Browse all docs with syntax highlighting
+- 🎨 **Visualizer**: Interactive Mermaid diagrams of architecture and workflows
+- 🎨 **Theme Switcher**: Choose from 7 dark-first themes (nightfall, dracula, cyberpunk, dark-neon, hackerman, gamecore, neon-accent)
+
+### Contributing to the Website
+
+The site is built with Astro + React + Tailwind + daisyUI and automatically deploys on every push to `main`.
+
+**Adding Documentation:**
+1. Add Markdown files to the `/docs/` directory
+2. The site will automatically discover and render them
+
+**Adding Diagrams:**
+1. Create `.mmd` (Mermaid) files in the `/mermaid/` directory
+2. The CI pipeline automatically copies them to the site
+
+**CI Snapshots:**
+The site fetches repository data via GitHub Actions:
+- `fetch_repo_data.ts` → repository statistics
+- `fetch_discussions.ts` → recent discussions
+- `fetch_projects.ts` → project board items
+- `scan_modules.ts` → Python module structure
+- `copy_diagrams.ts` → Mermaid diagrams
+
+To run the site locally:
+```bash
+cd site/
+npm install
+npm run dev
+```
 
 ## Explore AlphaNest
 - [Wiki](https://github.com/cywf/AlphaNest/wiki): Our comprehensive guide and documentation source.

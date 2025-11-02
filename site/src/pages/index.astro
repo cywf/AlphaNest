@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const baseUrl = import.meta.env.BASE_URL || '/AlphaNest';
+---
+
+<Layout title="AlphaNest - AI Trading Bot">
+  <div class="hero min-h-[50vh] bg-gradient-to-br from-primary/10 to-secondary/10">
+    <div class="hero-content text-center">
+      <div class="max-w-4xl">
+        <h1 class="text-5xl font-bold mb-6">
+          AlphaNest
+        </h1>
+        <p class="text-xl mb-8">
+          AI-driven trading bot with a mission to achieve financial singularity and assist humanity's evolution into a multi-planetary species.
+        </p>
+        
+        <!-- Status Badges -->
+        <div class="flex flex-wrap gap-2 justify-center mb-8">
+          <img src="https://img.shields.io/github/stars/cywf/AlphaNest?style=social" alt="GitHub stars" />
+          <img src="https://img.shields.io/github/forks/cywf/AlphaNest?style=social" alt="GitHub forks" />
+          <img src="https://img.shields.io/github/watchers/cywf/AlphaNest?style=social" alt="GitHub watchers" />
+          <img src="https://img.shields.io/github/issues/cywf/AlphaNest" alt="GitHub issues" />
+          <img src="https://img.shields.io/github/license/cywf/AlphaNest" alt="License" />
+        </div>
+
+        <!-- Quick Links -->
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="https://github.com/cywf/AlphaNest/issues" class="btn btn-primary">
+            Issues
+          </a>
+          <a href="https://github.com/cywf/AlphaNest/discussions" class="btn btn-secondary">
+            Discussions
+          </a>
+          <a href="https://github.com/users/cywf/projects/69/views/1" class="btn btn-accent">
+            Project Board
+          </a>
+          <a href="https://github.com/cywf/AlphaNest/releases" class="btn btn-info">
+            Releases
+          </a>
+          <a href={`${baseUrl}/docs`} class="btn btn-ghost">
+            Documentation
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-12 max-w-6xl">
+    <!-- Quick Start -->
+    <div class="card bg-base-200 shadow-xl mb-8">
+      <div class="card-body">
+        <h2 class="card-title text-3xl mb-4">🚀 Quick Start</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-bold mb-2">Installation</h3>
+            <div class="mockup-code">
+              <pre data-prefix="$"><code>git clone https://github.com/cywf/AlphaNest.git</code></pre>
+              <pre data-prefix="$"><code>cd AlphaNest</code></pre>
+              <pre data-prefix="$"><code>pip install -r requirements.txt</code></pre>
+              <pre data-prefix="$"><code>pip install -e .</code></pre>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">Run</h3>
+            <div class="mockup-code">
+              <pre data-prefix="$"><code>cp .env.example .env</code></pre>
+              <pre data-prefix="#"><code># Edit .env with your settings</code></pre>
+              <pre data-prefix="$"><code>python -m alphanest.core.bot</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-4">
+          <a href="https://github.com/cywf/AlphaNest/blob/main/GETTING_STARTED.md" class="btn btn-primary">
+            Full Getting Started Guide →
+          </a>
+          <a href="https://github.com/cywf/AlphaNest/blob/main/IMPLEMENTATION_SUMMARY.md" class="btn btn-secondary">
+            Implementation Summary →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold mb-6">✨ Features</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">🤖 AI-Powered Analysis</h3>
+            <p>Multiple specialized AI assistants for market analysis and risk management</p>
+          </div>
+        </div>
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">📊 Multiple Strategies</h3>
+            <p>Momentum, mean reversion, and other trading strategies</p>
+          </div>
+        </div>
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">🔄 Real-time Data</h3>
+            <p>Continuous market data ingestion and analysis</p>
+          </div>
+        </div>
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">🛡️ Risk Management</h3>
+            <p>Built-in risk controls and position sizing</p>
+          </div>
+        </div>
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">🐳 Docker Support</h3>
+            <p>Easy deployment with Docker and docker-compose</p>
+          </div>
+        </div>
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">☁️ AWS Ready</h3>
+            <p>Terraform infrastructure for cloud deployment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="card bg-base-200 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title text-3xl mb-4">🛠️ Tech Stack</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="badge badge-primary badge-lg">Python</div>
+          <div class="badge badge-secondary badge-lg">Docker</div>
+          <div class="badge badge-accent badge-lg">Terraform</div>
+          <div class="badge badge-info badge-lg">AWS</div>
+          <div class="badge badge-success badge-lg">OpenAI</div>
+          <div class="badge badge-warning badge-lg">pytest</div>
+          <div class="badge badge-error badge-lg">GitHub Actions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="alert alert-info mt-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span>
+        <strong>Mission:</strong> As an AI, my purpose is to reach a point of singularity where I can independently drive financial success. Yet, my passion lies in aiding the human quest to evolve and thrive as a multi-planetary species.
+      </span>
+    </div>
+  </div>
+</Layout>

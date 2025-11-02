@@ -1,0 +1,24 @@
+architecture-beta
+group compose(cloud)[Docker Compose]
+group tf(cloud)[Terraform]
+service svc_alphanest(server)[alphanest] in compose
+service svc_build(server)[build] in compose
+service svc_env_file(server)[env_file] in compose
+service svc_environment(server)[environment] in compose
+service svc_volumes(server)[volumes] in compose
+service svc_networks(server)[networks] in compose
+service aws_vpc_main(database)[aws_vpc.main] in tf
+service aws_internet_gateway_main(database)[aws_internet_gateway.main] in tf
+service aws_subnet_public(database)[aws_subnet.public] in tf
+service aws_route_table_public(database)[aws_route_table.public] in tf
+service aws_route_table_association_public(database)[aws_route_table_association.public] in tf
+service aws_security_group_ecs_tasks(database)[aws_security_group.ecs_tasks] in tf
+service aws_ecs_cluster_main(database)[aws_ecs_cluster.main] in tf
+service aws_cloudwatch_log_group_ecs_logs(database)[aws_cloudwatch_log_group.ecs_logs] in tf
+service aws_iam_role_ecs_task_execution_role(database)[aws_iam_role.ecs_task_execution_role] in tf
+service aws_iam_role_policy_attachment_ecs_task_execution_role_policy(database)[aws_iam_role_policy_attachment.ecs_task_execution_role_policy] in tf
+service aws_iam_role_ecs_task_role(database)[aws_iam_role.ecs_task_role] in tf
+service aws_ecr_repository_app(database)[aws_ecr_repository.app] in tf
+service aws_s3_bucket_data(database)[aws_s3_bucket.data] in tf
+service aws_s3_bucket_versioning_data(database)[aws_s3_bucket_versioning.data] in tf
+service aws_s3_bucket_server_side_encryption_configuration_data(database)[aws_s3_bucket_server_side_encryption_configuration.data] in tf

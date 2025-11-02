@@ -1,0 +1,12 @@
+sequenceDiagram
+actor Dev
+participant GitHub
+participant Runner
+Dev->>GitHub: triggers "CI/CD Pipeline"
+GitHub->>Runner: dispatch
+loop CI/CD Pipeline
+end
+Dev->>GitHub: triggers "Codebase Mindmap"
+GitHub->>Runner: dispatch
+loop Codebase Mindmap
+end

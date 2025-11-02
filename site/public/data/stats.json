@@ -1,0 +1,25 @@
+{
+  "stars": 3,
+  "forks": 1,
+  "watchers": 1,
+  "languages": {
+    "Python": 65000,
+    "HCL": 15000,
+    "Dockerfile": 5000,
+    "Shell": 3000
+  },
+  "commits": [
+    { "week": "Sep 21", "count": 8 },
+    { "week": "Sep 28", "count": 12 },
+    { "week": "Oct 5", "count": 15 },
+    { "week": "Oct 12", "count": 10 },
+    { "week": "Oct 19", "count": 18 },
+    { "week": "Oct 26", "count": 14 },
+    { "week": "Nov 2", "count": 20 },
+    { "week": "Nov 9", "count": 16 },
+    { "week": "Nov 16", "count": 11 },
+    { "week": "Nov 23", "count": 9 },
+    { "week": "Nov 30", "count": 13 },
+    { "week": "Dec 7", "count": 17 }
+  ]
+}

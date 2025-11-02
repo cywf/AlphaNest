@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DiscussionsList from '../components/DiscussionsList';
+---
+
+<Layout title="Discussions - AlphaNest" description="Browse recent discussions from the AlphaNest community">
+  <div class="container mx-auto px-4 py-12 max-w-6xl">
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold mb-2">Discussions</h1>
+      <p class="text-lg opacity-70">Join conversations about features, ideas, and community projects</p>
+      <div class="mt-4">
+        <a 
+          href="https://github.com/cywf/AlphaNest/discussions/new/choose" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          Start a New Discussion
+        </a>
+      </div>
+    </div>
+    
+    <DiscussionsList client:load />
+  </div>
+</Layout>

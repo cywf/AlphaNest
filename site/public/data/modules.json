@@ -1,0 +1,27 @@
+[
+  {
+    "name": "core",
+    "path": "core",
+    "type": "directory"
+  },
+  {
+    "name": "data",
+    "path": "data",
+    "type": "directory"
+  },
+  {
+    "name": "models",
+    "path": "models",
+    "type": "directory"
+  },
+  {
+    "name": "strategies",
+    "path": "strategies",
+    "type": "directory"
+  },
+  {
+    "name": "utils",
+    "path": "utils",
+    "type": "directory"
+  }
+]
