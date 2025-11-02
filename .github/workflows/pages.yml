@@ -44,6 +44,12 @@ jobs:
           npx tsx scripts/scan_modules.ts
           npx tsx scripts/copy_diagrams.ts
 
+      - name: Generate codebase mindmap
+        run: |
+          npm install -g markmap-cli
+          node ./scripts/generate-markmap.mjs
+          npx markmap-cli ./markmap/repo-map.md -o ./site/public/repo-map.html
+
       - name: Build site
         working-directory: ./site
         env:
