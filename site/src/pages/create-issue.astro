@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const issueTemplates = [
+  {
+    title: 'Bug Report',
+    description: 'Report a bug or issue with AlphaNest',
+    icon: '🐛',
+    labels: 'bug',
+    template: 'bug_report.md',
+  },
+  {
+    title: 'Feature Request',
+    description: 'Suggest a new feature or enhancement',
+    icon: '✨',
+    labels: 'enhancement',
+    template: 'feature_request.md',
+  },
+  {
+    title: 'Documentation',
+    description: 'Request documentation improvements',
+    icon: '📚',
+    labels: 'documentation',
+    template: '',
+  },
+  {
+    title: 'Question',
+    description: 'Ask a question about AlphaNest',
+    icon: '❓',
+    labels: 'question',
+    template: '',
+  },
+];
+
+const repoUrl = 'https://github.com/cywf/AlphaNest';
+---
+
+<Layout title="Create Issue - AlphaNest" description="Create a new issue or feature request for AlphaNest">
+  <div class="container mx-auto px-4 py-12 max-w-4xl">
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold mb-4">Create an Issue</h1>
+      <p class="text-lg opacity-70">
+        Choose a template below to create a new issue on GitHub
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      {issueTemplates.map((template) => {
+        const url = template.template
+          ? `${repoUrl}/issues/new?template=${template.template}&labels=${template.labels}`
+          : `${repoUrl}/issues/new?labels=${template.labels}&title=${encodeURIComponent(`[${template.title}] `)}`;
+        
+        return (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card bg-base-200 shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+          >
+            <div class="card-body">
+              <div class="text-5xl mb-2">{template.icon}</div>
+              <h2 class="card-title">{template.title}</h2>
+              <p class="opacity-70">{template.description}</p>
+              <div class="card-actions justify-end mt-4">
+                <div class="badge badge-primary">{template.labels}</div>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="divider">OR</div>
+
+    <div class="card bg-base-200 shadow-xl">
+      <div class="card-body">
+        <h3 class="card-title">Create a Blank Issue</h3>
+        <p class="opacity-70">
+          Start from scratch without a template
+        </p>
+        <div class="card-actions justify-end">
+          <a
+            href={`${repoUrl}/issues/new`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+          >
+            Create Blank Issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info mt-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <div>
+        <h3 class="font-bold">Need Help?</h3>
+        <div class="text-sm">
+          Before creating an issue, check if a similar one already exists. For questions and discussions, consider using 
+          <a href="https://github.com/cywf/AlphaNest/discussions" class="link link-hover font-semibold">GitHub Discussions</a> instead.
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

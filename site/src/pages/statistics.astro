@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StatisticsComponent from '../components/Statistics';
+---
+
+<Layout title="Statistics - AlphaNest" description="View repository statistics, language breakdown, and commit activity">
+  <div class="container mx-auto px-4 py-12 max-w-6xl">
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold mb-2">Repository Statistics</h1>
+      <p class="text-lg opacity-70">Real-time insights into AlphaNest's development activity</p>
+    </div>
+    
+    <StatisticsComponent client:load />
+  </div>
+</Layout>

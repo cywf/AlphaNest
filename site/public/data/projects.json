@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Setup CI/CD Pipeline",
+    "status": "done",
+    "labels": ["enhancement", "devops"],
+    "assignees": ["cywf"],
+    "url": "https://github.com/cywf/AlphaNest/issues"
+  },
+  {
+    "title": "Implement Trading Strategy",
+    "status": "doing",
+    "labels": ["feature", "trading"],
+    "assignees": ["cywf"],
+    "url": "https://github.com/cywf/AlphaNest/issues"
+  },
+  {
+    "title": "Add Documentation",
+    "status": "todo",
+    "labels": ["documentation"],
+    "assignees": [],
+    "url": "https://github.com/cywf/AlphaNest/issues"
+  },
+  {
+    "title": "Integrate Real-time Data",
+    "status": "todo",
+    "labels": ["feature", "data"],
+    "assignees": [],
+    "url": "https://github.com/cywf/AlphaNest/issues"
+  }
+]
