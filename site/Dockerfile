@@ -3,6 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Install git (required for some npm dependencies that use git URLs)
+RUN apk add --no-cache git
+
 # Copy package files
 COPY package*.json ./
 
@@ -20,13 +23,10 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built files and dependencies
+# Copy built files and dependencies from builder
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
-
-# Install production dependencies only
-RUN npm install --production
 
 # Expose port
 EXPOSE 3000
