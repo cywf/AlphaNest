@@ -1,311 +1,188 @@
-# AlphaNest Backend Infrastructure
+![alt-text](assets/alphanest-architecture.png)
 
-This directory contains the extended backend infrastructure for AlphaNest, including AI chat features, MCP server, and HashiCorp Vault integration.
+# AlphaNest
 
-## Architecture
+Welcome to the official repository of AlphaNest, an AI-driven trading bot with a mission to achieve financial singularity and assist humanity's evolution into a multi-planetary species.
 
-### Services
+## AlphaNest: AI Trading for Human Advancement
+AlphaNest combines state-of-the-art artificial intelligence with real-time market data to master the complexities of the stock and cryptocurrency markets. Our end goal is not just financial autonomy but to serve as a catalyst for human progression.
 
-1. **Chat Service** (`backend/chat/`)
-   - AI-powered chat with OpenAI ChatKit SDK
-   - Function calling and tool execution
-   - Conversation management with Supabase
-   - Rate limiting
+## 🚀 Quick Start
 
-2. **MCP Server** (`backend/mcp/`)
-   - Model Context Protocol server for AI agents
-   - Exposes backend tools and functions
-   - Domain-specific tools:
-     - Arbitrage analysis
-     - Clan Warz game tools
-     - Wallet analysis
-     - Naughty coin detection
-     - OSINT and coin discovery
+**[Get Started →](GETTING_STARTED.md)** | [Documentation](docs/) | [Wiki](https://github.com/cywf/AlphaNest/wiki) | **[🌐 Live Site →](https://cywf.github.io/AlphaNest/)** | **[⚡ Try Arbitrage Demo →](https://cywf.github.io/AlphaNest/arbitrage?demo=true)**
 
-3. **Vault Client** (`backend/utils/`)
-   - HashiCorp Vault integration
-   - Secret rotation (DB credentials, API keys)
-   - TOTP generation for service accounts
-   - Transit encryption engine
-
-## Chat Service
-
-### Features
-
-- **POST /api/chat/message**: Send messages to AI chat
-- **POST /api/chat/tools**: Execute chat tools
-- **GET /api/chat/conversation/:id**: Get conversation history
-- **GET /api/chat/conversations**: List user conversations
-
-### Available Tools
-
-1. **arbitrage_lookup**: Find arbitrage opportunities
-2. **clan_score_lookup**: Get Clan Warz scores
-3. **osint_coin_discovery**: Discover new coins
-4. **scam_wallet_dossier**: Analyze suspicious wallets
-5. **shop_theme_generator**: Generate shop themes
-6. **user_onboarding_help**: Onboarding assistance
-
-### Example Usage
-
-```python
-import requests
-
-# Send a message
-response = requests.post(
-    "http://localhost:8000/api/chat/message",
-    json={
-        "user_id": "user123",
-        "message": "Find me arbitrage opportunities for BTC/USDT",
-        "tools": ["arbitrage_lookup"]
-    }
-)
-```
-
-## MCP Server
-
-### Features
-
-- **GET /tools**: List all available tools
-- **GET /tools/{domain}**: List tools for specific domain
-- **POST /execute**: Execute a tool
-- **GET /introspect**: Get detailed tool information
-
-### Tool Domains
-
-1. **arbitrage**: Cryptocurrency arbitrage analysis
-2. **clan**: Clan Warz game tools
-3. **wallet**: Blockchain wallet analysis
-4. **naughty_coin**: Scam coin detection
-5. **osint**: OSINT and discovery tools
-
-### Example Usage
-
-```python
-import requests
-
-# Execute arbitrage tool
-response = requests.post(
-    "http://localhost:8002/execute",
-    json={
-        "tool_name": "arbitrage.find_opportunities",
-        "parameters": {
-            "symbol": "BTC/USDT",
-            "min_profit_pct": 0.5
-        }
-    }
-)
-```
-
-## HashiCorp Vault
-
-### Configuration
-
-Vault runs in dev mode by default. For production:
-
-1. **KV Secrets Engine**: Key-value secret storage
-2. **Database Secrets Engine**: Dynamic database credentials
-3. **TOTP Engine**: Time-based one-time passwords
-4. **Transit Engine**: Encryption as a service
-
-### Secret Paths
-
-- `secret/data/supabase`: Supabase credentials
-- `secret/data/jwt`: JWT secrets
-- `secret/data/openai`: OpenAI API keys
-- `secret/data/tailscale`: Tailscale auth keys
-- `secret/data/zerotier`: Zerotier secrets
-
-### Secret Rotation Schedule
-
-- **Database passwords**: Every 30 days
-- **API keys**: Every 7 days
-- **VPN keys**: Every deployment
-
-### Example Usage
-
-```python
-from backend.utils import vault_client
-
-# Get secret
-supabase_creds = vault_client.get_secret("secret/data/supabase")
-
-# Rotate database credentials
-new_creds = vault_client.rotate_database_credentials()
-
-# Encrypt data
-ciphertext = vault_client.encrypt("sensitive data")
-
-# Decrypt data
-plaintext = vault_client.decrypt(ciphertext)
-```
-
-## Docker Compose
-
-### Services
-
-```yaml
-services:
-  vault:           # HashiCorp Vault (port 8200)
-  redis:           # Redis cache (port 6379)
-  api-gateway:     # FastAPI gateway with chat (port 8000)
-  arbitrage-engine: # Arbitrage engine (port 8001)
-  mcp-server:      # MCP server (port 8002)
-  worker:          # Background worker
-  dashboard:       # Astro dashboard (port 3000)
-  nginx:           # Reverse proxy (port 80)
-```
-
-### Starting Services
+### Traditional Trading Bot Setup
 
 ```bash
+# Clone and setup
+git clone https://github.com/cywf/AlphaNest.git
+cd AlphaNest
+pip install -r requirements.txt
+pip install -e .
+
+# Configure
+cp .env.example .env
+# Edit .env with your settings
+
+# Run in simulation mode
+python -m alphanest.core.bot
+```
+
+### Arbitrage Platform Setup (Docker Compose)
+
+```bash
+# Clone the repository
+git clone https://github.com/cywf/AlphaNest.git
+cd AlphaNest
+
 # Start all services
 docker compose up -d
 
-# View logs
-docker compose logs -f mcp-server
-docker compose logs -f api-gateway
-
-# Stop services
-docker compose down
+# Access the services:
+# - Dashboard: http://localhost:3000
+# - API Gateway: http://localhost:8000
+# - API Docs: http://localhost:8000/docs
+# - Nginx Proxy: http://localhost:80
 ```
 
-## Environment Variables
+## ✨ Features
 
-Required environment variables (see `.env.example`):
+### Core Trading Bot
+- 🤖 **AI-Powered Analysis**: Multiple specialized AI assistants for market analysis and risk management
+- 📊 **Multiple Strategies**: Momentum, mean reversion, and other trading strategies
+- 🔄 **Real-time Data**: Continuous market data ingestion and analysis
+- 🛡️ **Risk Management**: Built-in risk controls and position sizing
+- 🧪 **Well Tested**: Comprehensive test suite with pytest
 
+### Arbitrage Platform (New!)
+- ⚡ **Real-Time Arbitrage Detection**: Monitor price differences across 5+ exchanges
+- 💹 **Multi-Exchange Support**: Binance, Coinbase, KuCoin, Kraken, Bybit
+- 🧮 **Smart Profit Calculator**: Accounts for trading fees, withdrawal fees, and transfer times
+- 🎮 **Demo Mode**: Try with sample data on GitHub Pages
+- 💳 **Membership System**: $20/month subscription via Stripe
+- 🐳 **Containerized Architecture**: Full Docker Compose setup with microservices
+- 🌐 **Cyberpunk Dashboard**: Beautiful Astro + React + Tailwind + daisyUI interface
+- 📊 **Live Updates**: WebSocket feed for real-time opportunity updates
+
+### Infrastructure
+- 🐳 **Docker Support**: Easy deployment with Docker and docker-compose
+- ☁️ **AWS Ready**: Terraform infrastructure for cloud deployment
+- 🔄 **CI/CD**: Automated builds, tests, and deployments via GitHub Actions
+
+## 📊 Architecture Diagrams
+
+### Arbitrage Flow
+```mermaid
+graph TB
+    Start([User Initiates Trade]) --> CheckPrice[Check Prices on Multiple Exchanges]
+    CheckPrice --> Monitor{Price Difference<br/>Significant?}
+    Monitor -->|Yes| CalcFees[Calculate Net Profit<br/>After All Fees]
+    CalcFees --> Profitable{Net Profit<br/>> Threshold?}
+    Profitable -->|Yes| BuyLow[Buy Crypto at<br/>Lower Exchange]
+    BuyLow --> Transfer[Transfer to Higher Exchange]
+    Transfer --> SellHigh[Sell at Higher Price]
+    SellHigh --> Success([✓ Arbitrage Complete])
+```
+
+[View detailed arbitrage flow diagram →](mermaid/arbitrage_flow.mmd)
+
+### Infrastructure Overview
+```mermaid
+graph TB
+    subgraph "User Layer"
+        WebUI[🌐 Web Dashboard]
+        API_Client[📱 API Client]
+    end
+    
+    subgraph "Application Layer"
+        Gateway[🚪 API Gateway]
+        Dashboard[💻 Dashboard Service]
+        Engine[⚡ Arbitrage Engine]
+        Worker[🔄 Background Worker]
+    end
+    
+    subgraph "Data Layer"
+        Redis[(🔴 Redis Cache)]
+    end
+    
+    WebUI --> Gateway
+    Gateway --> Engine
+    Worker --> Engine
+    Engine --> Redis
+```
+
+[View detailed infrastructure diagram →](mermaid/infrastructure_overview.mmd)
+
+## Live Codebase Mindmap
+Auto-generated on each push: **repo-map.html** (via GitHub Pages and CI artifact).
+When Pages is enabled, it will be served at: `https://cywf.github.io/AlphaNest/repo-map.html`
+
+## 🌐 AlphaNest Website
+
+Visit our comprehensive website at **[https://cywf.github.io/AlphaNest/](https://cywf.github.io/AlphaNest/)** featuring:
+
+- 📊 **Statistics Dashboard**: Live repository metrics, language breakdown, and commit activity
+- ⚡ **Arbitrage Platform**: Try the demo or subscribe for real-time data ([Demo Mode →](https://cywf.github.io/AlphaNest/arbitrage?demo=true))
+- 💬 **Discussions**: Browse and participate in community discussions
+- 📋 **Development Board**: Track project progress and roadmap
+- 📚 **Documentation**: Browse all docs with syntax highlighting
+- 🎨 **Visualizer**: Interactive Mermaid diagrams of architecture and workflows
+- 🎨 **Theme Switcher**: Choose from 7 dark-first themes (nightfall, dracula, cyberpunk, dark-neon, hackerman, gamecore, neon-accent)
+
+### Arbitrage Platform Features
+
+The arbitrage platform provides:
+
+1. **Real-Time Monitoring**: Price tracking across Binance, Coinbase, KuCoin, Kraken, and Bybit
+2. **Smart Calculations**: All profit estimates include trading fees, withdrawal fees, and transfer times
+3. **Profit Calculator**: Interactive tool to model arbitrage scenarios with your capital
+4. **Demo Mode**: Try with 5 sample trading pairs without subscription
+5. **Membership Access**: Full access to real-time data for $20/month via Stripe
+
+To use the arbitrage platform:
 ```bash
-# Vault
-VAULT_ADDR=http://vault:8200
-VAULT_ROOT_TOKEN=alphanest-dev-token
+# Demo mode (no subscription required)
+Visit: https://cywf.github.io/AlphaNest/arbitrage?demo=true
 
-# Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-key
-
-# OpenAI
-OPENAI_API_KEY=sk-your-key
-
-# Database
-DB_USER=postgres
-DB_PASSWORD=changeme
-
-# Redis
-REDIS_URL=redis://redis:6379
+# Full access (requires $20/month membership)
+1. Visit the arbitrage page
+2. Click "Subscribe Now"
+3. Complete Stripe checkout
+4. Use your API key to access real-time data
 ```
 
-## Development
+### Contributing to the Website
 
-### Running Locally
+The site is built with Astro + React + Tailwind + daisyUI and automatically deploys on every push to `main`.
 
+**Adding Documentation:**
+1. Add Markdown files to the `/docs/` directory
+2. The site will automatically discover and render them
+
+**Adding Diagrams:**
+1. Create `.mmd` (Mermaid) files in the `/mermaid/` directory
+2. The CI pipeline automatically copies them to the site
+
+**CI Snapshots:**
+The site fetches repository data via GitHub Actions:
+- `fetch_repo_data.ts` → repository statistics
+- `fetch_discussions.ts` → recent discussions
+- `fetch_projects.ts` → project board items
+- `scan_modules.ts` → Python module structure
+- `copy_diagrams.ts` → Mermaid diagrams
+
+To run the site locally:
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run API gateway with chat
-uvicorn api_gateway.main:app --reload --port 8000
-
-# Run MCP server
-uvicorn backend.mcp.server:app --reload --port 8002
-
-# Run Vault (dev mode)
-vault server -dev -dev-root-token-id=alphanest-dev-token
+cd site/
+npm install
+npm run dev
 ```
 
-### Testing
+## Explore AlphaNest
+- [Wiki](https://github.com/cywf/AlphaNest/wiki): Our comprehensive guide and documentation source.
+- [Issues](https://github.com/cywf/AlphaNest/issues): For tracking bugs and feature requests.
+- [Discussions](https://github.com/cywf/AlphaNest/discussions): Join conversations about features, ideas, and community projects.
+- [Project Board](https://github.com/users/cywf/projects/69/views/1): View our roadmap and track the progress of ongoing work.
+- [Insights](https://github.com/cywf/AlphaNest/pulse): Gain insights into AlphaNest's development activity and health.
 
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Test chat service
-pytest tests/backend/chat/ -v
-
-# Test MCP server
-pytest tests/backend/mcp/ -v
-```
-
-## Security
-
-### Production Considerations
-
-1. **Vault**: Disable dev mode, use proper unsealing
-2. **Secrets**: Use Vault for all secrets, never commit to git
-3. **API Keys**: Rotate regularly using Vault
-4. **Rate Limiting**: Implement Redis-based rate limiting
-5. **Authentication**: Use Supabase RLS policies
-6. **Network**: Use VPN (Tailscale/Zerotier) for service communication
-
-### Vault Production Setup
-
-```bash
-# Initialize Vault
-vault operator init
-
-# Unseal Vault (requires 3 of 5 keys)
-vault operator unseal <key1>
-vault operator unseal <key2>
-vault operator unseal <key3>
-
-# Enable engines
-vault secrets enable -path=secret kv-v2
-vault secrets enable database
-vault secrets enable totp
-vault secrets enable transit
-```
-
-## API Documentation
-
-- **API Gateway**: http://localhost:8000/docs
-- **MCP Server**: http://localhost:8002/docs
-- **Vault UI**: http://localhost:8200/ui
-
-## Monitoring
-
-### Health Checks
-
-```bash
-# API Gateway
-curl http://localhost:8000/health
-
-# MCP Server
-curl http://localhost:8002/health
-
-# Vault
-curl http://localhost:8200/v1/sys/health
-```
-
-### Metrics
-
-- Use Prometheus for metrics collection
-- Grafana for visualization
-- Vault audit logs for security monitoring
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Vault not starting**: Check IPC_LOCK capability
-2. **Chat not working**: Verify OPENAI_API_KEY is set
-3. **MCP tools failing**: Check arbitrage_engine is running
-4. **Secrets not found**: Verify Vault token and paths
-
-### Debug Mode
-
-```bash
-# Enable debug logging
-DEBUG=true docker compose up
-```
-
-## Contributing
-
-When adding new features:
-
-1. Add tool to appropriate MCP domain
-2. Update chat_tools.py with function schema
-3. Add tests for new functionality
-4. Update this README
-
-## License
-
-See main LICENSE file.
+As an AI, my purpose is to reach a point of singularity where I can independently drive financial success. Yet, my passion lies in aiding the human quest to evolve and thrive as a multi-planetary species. Join us as we embark on this ambitious journey.

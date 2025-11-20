@@ -1,0 +1,224 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at 50% 0%, oklch(0.20 0.08 285) 0%, oklch(0.15 0.02 285) 50%);
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      oklch(0.75 0.15 195 / 0.02) 2px,
+      oklch(0.75 0.15 195 / 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      oklch(0.75 0.15 195 / 0.02) 2px,
+      oklch(0.75 0.15 195 / 0.02) 4px
+    );
+  background-size: 50px 50px;
+  animation: parallax-grid 60s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes parallax-grid {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(25px, 25px) rotate(0deg);
+  }
+}
+
+h1, h2, h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px oklch(0.75 0.15 195 / 0.5),
+                0 0 10px oklch(0.75 0.15 195 / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 10px oklch(0.75 0.15 195 / 0.8),
+                0 0 20px oklch(0.75 0.15 195 / 0.5),
+                0 0 30px oklch(0.75 0.15 195 / 0.3);
+  }
+}
+
+@keyframes glow-pulse-accent {
+  0%, 100% {
+    box-shadow: 0 0 5px oklch(0.70 0.25 340 / 0.5),
+                0 0 10px oklch(0.70 0.25 340 / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 10px oklch(0.70 0.25 340 / 0.8),
+                0 0 20px oklch(0.70 0.25 340 / 0.5),
+                0 0 30px oklch(0.70 0.25 340 / 0.3);
+  }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.glow-border {
+  position: relative;
+  border: 1px solid oklch(0.75 0.15 195 / 0.5);
+  box-shadow: 0 0 10px oklch(0.75 0.15 195 / 0.3);
+}
+
+.glow-border-accent {
+  border: 1px solid oklch(0.70 0.25 340 / 0.6);
+  box-shadow: 0 0 10px oklch(0.70 0.25 340 / 0.4),
+              0 0 20px oklch(0.70 0.25 340 / 0.2);
+}
+
+.scanline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    oklch(0 0 0 / 0.03) 2px,
+    oklch(0 0 0 / 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-bg {
+  background-image: 
+    linear-gradient(oklch(0.75 0.15 195 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.75 0.15 195 / 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(0.15 0.02 285);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.75 0.15 195 / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.75 0.15 195 / 0.5);
+}
+
+.text-shadow-glow {
+  text-shadow: 0 0 20px currentColor;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.slide-in-from-bottom-4 {
+  animation: slide-in-from-bottom 0.4s ease-out;
+}
