@@ -1,0 +1,83 @@
+graph TB
+    subgraph "User Layer"
+        WebUI[🌐 Web Dashboard<br/>Astro + React]
+        API_Client[📱 API Client<br/>External Apps]
+    end
+    
+    subgraph "GitHub Pages"
+        StaticSite[📄 Static Site<br/>Demo Mode]
+    end
+    
+    subgraph "Edge/CDN Layer"
+        Nginx[🔀 Nginx Reverse Proxy<br/>Load Balancer]
+    end
+    
+    subgraph "Application Layer"
+        Gateway[🚪 API Gateway<br/>FastAPI - Port 8000]
+        Dashboard[💻 Dashboard Service<br/>Astro SSR - Port 3000]
+    end
+    
+    subgraph "Business Logic Layer"
+        Engine[⚡ Arbitrage Engine<br/>Python - Port 8001]
+        Worker[🔄 Background Worker<br/>Poller & Scheduler]
+    end
+    
+    subgraph "External Services"
+        Stripe[💳 Stripe<br/>Payments]
+        Exchanges[🏦 Crypto Exchanges<br/>APIs]
+    end
+    
+    subgraph "Data Layer"
+        Redis[(🔴 Redis<br/>Cache & Queue)]
+        Database[(💾 PostgreSQL<br/>User Data)]
+    end
+    
+    subgraph "Infrastructure"
+        Docker[🐳 Docker Compose<br/>Container Orchestration]
+        GitHub[🔧 GitHub Actions<br/>CI/CD Pipeline]
+    end
+    
+    WebUI --> Nginx
+    API_Client --> Nginx
+    
+    Nginx --> Gateway
+    Nginx --> Dashboard
+    
+    Gateway --> Engine
+    Gateway --> Stripe
+    Gateway --> Database
+    Gateway --> Redis
+    
+    Dashboard --> Gateway
+    
+    Engine --> Exchanges
+    Engine --> Redis
+    
+    Worker --> Engine
+    Worker --> Redis
+    Worker --> Exchanges
+    
+    GitHub --> StaticSite
+    GitHub --> Docker
+    
+    Docker -.-> Gateway
+    Docker -.-> Dashboard
+    Docker -.-> Engine
+    Docker -.-> Worker
+    Docker -.-> Redis
+    Docker -.-> Nginx
+    
+    style WebUI fill:#60a5fa,stroke:#3b82f6,color:#000
+    style Dashboard fill:#60a5fa,stroke:#3b82f6,color:#000
+    style Gateway fill:#34d399,stroke:#10b981,color:#000
+    style Engine fill:#fbbf24,stroke:#f59e0b,color:#000
+    style Worker fill:#a78bfa,stroke:#8b5cf6,color:#000
+    style Redis fill:#f87171,stroke:#ef4444,color:#000
+    style Database fill:#4ade80,stroke:#22c55e,color:#000
+    style Stripe fill:#c084fc,stroke:#a855f7,color:#000
+    style Exchanges fill:#fb923c,stroke:#f97316,color:#000
+    style Docker fill:#38bdf8,stroke:#0ea5e9,color:#000
+    style StaticSite fill:#a3e635,stroke:#84cc16,color:#000
+    
+    classDef containerClass fill:#1e293b,stroke:#475569,color:#fff
+    class Nginx,GitHub containerClass

@@ -54,6 +54,7 @@ jobs:
         working-directory: ./site
         env:
           GITHUB_SHA: ${{ github.sha }}
+          DEMO_MODE: "true"
         run: npm run build
 
       - name: Configure Pages
