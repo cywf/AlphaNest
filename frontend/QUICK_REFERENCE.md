@@ -177,6 +177,7 @@ const themeConfig = MARKET_THEME_CONFIGS[booth.theme]
 ## 🎯 Common Patterns
 
 ### Display NFT with Rarity Styling
+{% raw %}
 ```tsx
 const rarityConfig = RARITY_CONFIGS[nft.rarity]
 
@@ -190,8 +191,10 @@ const rarityConfig = RARITY_CONFIGS[nft.rarity]
   {/* NFT content */}
 </div>
 ```
+{% endraw %}
 
 ### Apply Booth Theme
+{% raw %}
 ```tsx
 const themeConfig = MARKET_THEME_CONFIGS[booth.theme]
 
@@ -201,6 +204,7 @@ const themeConfig = MARKET_THEME_CONFIGS[booth.theme]
   </h1>
 </div>
 ```
+{% endraw %}
 
 ### Show Stats with Progress
 ```tsx
