@@ -5,6 +5,7 @@ import { ProfitCalculator } from './components/ProfitCalculator'
 import { NewCoinDiscoveryPanel } from './modules/newCoins/NewCoinDiscoveryPanel'
 import { NaughtyCoinPanel } from './modules/naughtyCoins/NaughtyCoinPanel'
 import { WalletLeaderboard } from './modules/walletIntel/WalletLeaderboard'
+import { WalletProfile } from './modules/walletIntel/WalletProfile'
 import { UserSignup } from './modules/users/UserSignup'
 import { UserLogin } from './modules/users/UserLogin'
 import { UserProfile } from './modules/users/UserProfile'
@@ -51,6 +52,7 @@ type AppPage =
   | 'new-coins'
   | 'naughty-coins'
   | 'scam-wallets'
+  | 'wallet-dossier'
   | 'calculator'
   | 'profile'
   | 'market'
@@ -86,6 +88,7 @@ function App() {
   const [selectedPoolId, setSelectedPoolId] = useState<string | null>(null)
   const [currentSimSessionId, setCurrentSimSessionId] = useState<string | null>(null)
   const [simPerformance, setSimPerformance] = useState<SimPerformance | null>(null)
+  const [selectedWalletAddress, setSelectedWalletAddress] = useState<string | null>(null)
 
   useEffect(() => {
     authEngine.initializeDemoUsers()
@@ -289,6 +292,11 @@ function App() {
         return [{ label: 'SK3TCHY-C0INS' }]
       case 'scam-wallets':
         return [{ label: 'SCAM-WALL3TS' }]
+      case 'wallet-dossier':
+        return [
+          { label: 'SCAM-WALL3TS', page: 'scam-wallets' },
+          { label: 'Wallet Dossier' },
+        ]
       case 'market-analysis':
         return [{ label: 'Market Analysis Feed' }]
       case 'stak3z':
@@ -414,9 +422,24 @@ function App() {
       case 'scam-wallets':
         return (
           <div className="container mx-auto px-4 py-8 max-w-7xl">
-            <WalletLeaderboard />
+            <WalletLeaderboard 
+              onViewWallet={(address) => {
+                setSelectedWalletAddress(address)
+                setCurrentPage('wallet-dossier')
+              }}
+            />
           </div>
         )
+
+      case 'wallet-dossier':
+        return selectedWalletAddress ? (
+          <div className="container mx-auto px-4 py-8 max-w-7xl">
+            <WalletProfile 
+              walletAddress={selectedWalletAddress}
+              onBack={() => setCurrentPage('scam-wallets')}
+            />
+          </div>
+        ) : null
 
       case 'profile':
         return (

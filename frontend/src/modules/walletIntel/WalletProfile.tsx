@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { WalletBadge } from './WalletBadge'
 import { ScamScoreMeter } from '../naughtyCoins/ScamScoreMeter'
@@ -14,17 +15,39 @@ import {
   Clock,
   Fingerprint,
   ShieldWarning,
-  ArrowsLeftRight
+  ArrowsLeftRight,
+  ArrowLeft
 } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { useState, useEffect } from 'react'
+import { generateScamWallets } from './walletIntelEngine'
 import type { ScamWallet } from './walletIntelTypes'
 
 interface WalletProfileProps {
-  wallet: ScamWallet
+  walletAddress: string
+  onBack?: () => void
 }
 
-export function WalletProfile({ wallet }: WalletProfileProps) {
+export function WalletProfile({ walletAddress, onBack }: WalletProfileProps) {
+  const [wallet, setWallet] = useState<ScamWallet | null>(null)
+
+  useEffect(() => {
+    // Generate or fetch wallet data - in production this would be an API call
+    const wallets = generateScamWallets(50)
+    const foundWallet = wallets.find(w => w.address === walletAddress) || wallets[0]
+    // Override address to match the requested one
+    setWallet({ ...foundWallet, address: walletAddress })
+  }, [walletAddress])
+
+  if (!wallet) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="text-center text-muted-foreground">Loading wallet data...</div>
+      </div>
+    )
+  }
+
   const showExpandedDossier = wallet.scamScore >= 60
   const showCriticalMode = wallet.scamScore > 90
 
@@ -81,6 +104,16 @@ export function WalletProfile({ wallet }: WalletProfileProps) {
 
   return (
     <div className="space-y-6">
+      {onBack && (
+        <Button
+          variant="outline"
+          onClick={onBack}
+          className="mb-4 gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Leaderboard
+        </Button>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
