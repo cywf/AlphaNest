@@ -1,0 +1,57 @@
+graph TB
+    Start([User Initiates Trade]) --> CheckPrice[Check Prices on Multiple Exchanges]
+    
+    CheckPrice --> Monitor{Price Difference<br/>Significant?}
+    
+    Monitor -->|No| Wait[Wait for Next Cycle]
+    Wait --> CheckPrice
+    
+    Monitor -->|Yes| CalcFees[Calculate Net Profit<br/>After All Fees]
+    
+    CalcFees --> Profitable{Net Profit<br/>> Threshold?}
+    
+    Profitable -->|No| Wait
+    
+    Profitable -->|Yes| BuyLow[Buy Crypto at<br/>Lower Exchange]
+    
+    BuyLow --> ConfirmBuy{Purchase<br/>Successful?}
+    ConfirmBuy -->|No| Alert1[Alert: Buy Failed]
+    Alert1 --> End([End])
+    
+    ConfirmBuy -->|Yes| Transfer[Transfer Crypto to<br/>Higher Price Exchange]
+    
+    Transfer --> WaitTransfer[Wait for Transfer<br/>Confirmation 5-30 min]
+    
+    WaitTransfer --> CheckTransfer{Transfer<br/>Complete?}
+    CheckTransfer -->|No| WaitTransfer
+    
+    CheckTransfer -->|Yes| PriceCheck{Sell Price<br/>Still Profitable?}
+    
+    PriceCheck -->|No| Alert2[Alert: Price Changed]
+    Alert2 --> Decide{Execute<br/>Anyway?}
+    Decide -->|No| Hold[Hold Position]
+    Hold --> End
+    
+    PriceCheck -->|Yes| SellHigh[Sell Crypto at<br/>Higher Exchange]
+    Decide -->|Yes| SellHigh
+    
+    SellHigh --> ConfirmSell{Sale<br/>Successful?}
+    ConfirmSell -->|No| Alert3[Alert: Sell Failed]
+    Alert3 --> End
+    
+    ConfirmSell -->|Yes| Withdraw[Withdraw to<br/>Base Currency]
+    
+    Withdraw --> CalcProfit[Calculate<br/>Actual Profit]
+    
+    CalcProfit --> Record[Record Trade<br/>& Update Stats]
+    
+    Record --> Success([✓ Arbitrage Complete])
+    
+    style Start fill:#4ade80,stroke:#22c55e,color:#000
+    style Success fill:#4ade80,stroke:#22c55e,color:#000
+    style BuyLow fill:#60a5fa,stroke:#3b82f6,color:#000
+    style SellHigh fill:#f472b6,stroke:#ec4899,color:#000
+    style Alert1 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style Alert2 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style Alert3 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style CalcProfit fill:#a78bfa,stroke:#8b5cf6,color:#000

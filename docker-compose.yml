@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # Original AlphaNest trading bot
   alphanest:
     build:
       context: .
@@ -17,6 +18,104 @@ services:
     networks:
       - alphanest-network
 
+  # Redis for caching and message queue
+  redis:
+    image: redis:7-alpine
+    container_name: alphanest-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - alphanest-network
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: alphanest-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DEMO_MODE=false
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - alphanest-network
+
+  # Arbitrage Engine (can be called via API gateway)
+  arbitrage-engine:
+    build:
+      context: .
+      dockerfile: arbitrage-engine/Dockerfile
+    container_name: alphanest-arbitrage
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - DEMO_MODE=false
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - alphanest-network
+
+  # Background Worker
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    container_name: alphanest-worker
+    restart: unless-stopped
+    environment:
+      - DEMO_MODE=false
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+      - arbitrage-engine
+    networks:
+      - alphanest-network
+
+  # Dashboard (Astro SSR)
+  dashboard:
+    build:
+      context: ./site
+      dockerfile: Dockerfile
+    container_name: alphanest-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://api-gateway:8000
+      - DEMO_MODE=false
+    depends_on:
+      - api-gateway
+    networks:
+      - alphanest-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: alphanest-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api-gateway
+      - dashboard
+    networks:
+      - alphanest-network
+
 networks:
   alphanest-network:
     driver: bridge
+
+volumes:
+  redis-data:

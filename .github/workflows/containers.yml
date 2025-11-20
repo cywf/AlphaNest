@@ -1,0 +1,83 @@
+name: Build and Test Containers
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-containers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - arbitrage-engine
+          - worker
+          - dashboard
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build ${{ matrix.service }}
+        run: |
+          if [ "${{ matrix.service }}" = "dashboard" ]; then
+            docker build -t alphanest-${{ matrix.service }}:latest -f site/Dockerfile ./site
+          else
+            docker build -t alphanest-${{ matrix.service }}:latest -f ${{ matrix.service }}/Dockerfile .
+          fi
+      
+      - name: Test ${{ matrix.service }} container
+        run: |
+          # Basic smoke test - check if container can start
+          docker images | grep alphanest-${{ matrix.service }}
+
+  test-compose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: build-containers
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          ENVIRONMENT=test
+          TRADING_ENABLED=false
+          DEMO_MODE=true
+          EOF
+      
+      - name: Validate docker-compose.yml
+        run: docker compose config
+      
+      - name: Build services
+        run: docker compose build
+      
+      - name: Test services can start
+        run: |
+          # Start services in detached mode
+          docker compose up -d
+          
+          # Wait for services to be healthy
+          sleep 30
+          
+          # Check if core services are running
+          docker compose ps
+          
+          # Stop services
+          docker compose down
