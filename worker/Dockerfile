@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 
 # Copy worker and arbitrage engine code
 COPY worker/ ./worker/
-COPY arbitrage-engine/ ./arbitrage-engine/
+COPY arbitrage_engine/ ./arbitrage_engine/
 
 # Run the worker
 CMD ["python", "-m", "worker.poller", "--interval", "10"]

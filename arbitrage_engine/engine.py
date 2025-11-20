@@ -6,13 +6,13 @@ import time
 import logging
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
-from .exchanges import (
-    BinanceConnector,
-    CoinbaseConnector,
-    KucoinConnector,
-    KrakenConnector,
-    BybitConnector,
-)
+
+# Import exchange connectors
+from arbitrage_engine.exchanges.binance import BinanceConnector
+from arbitrage_engine.exchanges.coinbase import CoinbaseConnector
+from arbitrage_engine.exchanges.kucoin import KucoinConnector
+from arbitrage_engine.exchanges.kraken import KrakenConnector
+from arbitrage_engine.exchanges.bybit import BybitConnector
 
 logger = logging.getLogger(__name__)
 

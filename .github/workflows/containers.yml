@@ -34,7 +34,8 @@ jobs:
           if [ "${{ matrix.service }}" = "dashboard" ]; then
             docker build -t alphanest-${{ matrix.service }}:latest -f site/Dockerfile ./site
           else
-            docker build -t alphanest-${{ matrix.service }}:latest -f ${{ matrix.service }}/Dockerfile .
+            SERVICE_DIR=$(echo "${{ matrix.service }}" | tr '-' '_')
+            docker build -t alphanest-${{ matrix.service }}:latest -f ${SERVICE_DIR}/Dockerfile .
           fi
       
       - name: Test ${{ matrix.service }} container

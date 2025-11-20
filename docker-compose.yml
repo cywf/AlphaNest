@@ -35,7 +35,7 @@ services:
   api-gateway:
     build:
       context: .
-      dockerfile: api-gateway/Dockerfile
+      dockerfile: api_gateway/Dockerfile
     container_name: alphanest-api
     restart: unless-stopped
     ports:
@@ -52,7 +52,7 @@ services:
   arbitrage-engine:
     build:
       context: .
-      dockerfile: arbitrage-engine/Dockerfile
+      dockerfile: arbitrage_engine/Dockerfile
     container_name: alphanest-arbitrage
     restart: unless-stopped
     ports:

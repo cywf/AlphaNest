@@ -9,10 +9,10 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir fastapi uvicorn websockets
 
 # Copy arbitrage engine code
-COPY arbitrage-engine/ ./arbitrage-engine/
+COPY arbitrage_engine/ ./arbitrage_engine/
 
 # Expose port
 EXPOSE 8001
 
 # Run the engine
-CMD ["uvicorn", "arbitrage-engine.router:router", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "arbitrage_engine.router:router", "--host", "0.0.0.0", "--port", "8001"]

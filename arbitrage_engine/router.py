@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Dict
 import logging
 
-from .engine import ArbitrageEngine, ArbitrageOpportunity
+from arbitrage_engine.engine import ArbitrageEngine, ArbitrageOpportunity
 
 logger = logging.getLogger(__name__)
 
