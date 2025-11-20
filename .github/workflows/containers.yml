@@ -22,6 +22,7 @@ jobs:
           - arbitrage-engine
           - worker
           - dashboard
+          - mcp-server
     
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +34,8 @@ jobs:
         run: |
           if [ "${{ matrix.service }}" = "dashboard" ]; then
             docker build -t alphanest-${{ matrix.service }}:latest -f site/Dockerfile ./site
+          elif [ "${{ matrix.service }}" = "mcp-server" ]; then
+            docker build -t alphanest-${{ matrix.service }}:latest -f backend/mcp/Dockerfile .
           else
             SERVICE_DIR=$(echo "${{ matrix.service }}" | tr '-' '_')
             docker build -t alphanest-${{ matrix.service }}:latest -f ${SERVICE_DIR}/Dockerfile .

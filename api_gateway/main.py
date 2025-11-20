@@ -7,8 +7,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
 import os
+import sys
 
 from .routes import arbitrage, membership
+
+# Add backend to path for chat module
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+try:
+    from backend.chat import router as chat_router
+    CHAT_ENABLED = True
+except ImportError:
+    CHAT_ENABLED = False
+    logging.warning("Chat module not available")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,6 +46,11 @@ app.add_middleware(
 # Include routers
 app.include_router(arbitrage.router)
 app.include_router(membership.router)
+
+# Include chat router if available
+if CHAT_ENABLED:
+    app.include_router(chat_router)
+    logger.info("Chat endpoints enabled")
 
 
 @app.get("/")

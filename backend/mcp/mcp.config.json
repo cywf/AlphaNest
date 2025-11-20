@@ -1,0 +1,38 @@
+{
+  "server": {
+    "name": "AlphaNest MCP Server",
+    "version": "1.0.0",
+    "protocol": "MCP/1.0"
+  },
+  "tools": {
+    "arbitrage": {
+      "enabled": true,
+      "rate_limit": 100
+    },
+    "clan": {
+      "enabled": true,
+      "rate_limit": 100
+    },
+    "wallet": {
+      "enabled": true,
+      "rate_limit": 50
+    },
+    "naughty_coin": {
+      "enabled": true,
+      "rate_limit": 50
+    },
+    "osint": {
+      "enabled": true,
+      "rate_limit": 20
+    }
+  },
+  "connections": {
+    "supabase": {
+      "url": "${SUPABASE_URL}",
+      "key": "${SUPABASE_SERVICE_ROLE_KEY}"
+    },
+    "redis": {
+      "url": "${REDIS_URL}"
+    }
+  }
+}
