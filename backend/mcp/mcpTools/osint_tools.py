@@ -7,7 +7,7 @@ from typing import Dict, Any, List
 
 class OSINTTools:
     """Tools for OSINT and coin discovery."""
-    
+
     def get_schemas(self) -> List[Dict[str, Any]]:
         """Get tool schemas."""
         return [
@@ -20,21 +20,21 @@ class OSINTTools:
                         "keywords": {
                             "type": "array",
                             "items": {"type": "string"},
-                            "description": "Keywords to search for"
+                            "description": "Keywords to search for",
                         },
                         "min_confidence": {
                             "type": "number",
                             "description": "Minimum confidence score (0-1)",
-                            "default": 0.7
+                            "default": 0.7,
                         },
                         "max_results": {
                             "type": "integer",
                             "description": "Maximum number of results",
-                            "default": 10
-                        }
+                            "default": 10,
+                        },
                     },
-                    "required": ["keywords"]
-                }
+                    "required": ["keywords"],
+                },
             },
             {
                 "name": "osint.search_social",
@@ -44,25 +44,22 @@ class OSINTTools:
                     "properties": {
                         "coin_symbol": {
                             "type": "string",
-                            "description": "Coin symbol to search for"
+                            "description": "Coin symbol to search for",
                         },
                         "platforms": {
                             "type": "array",
                             "items": {"type": "string"},
                             "description": "Social platforms to search",
-                            "default": ["twitter", "reddit", "telegram"]
-                        }
+                            "default": ["twitter", "reddit", "telegram"],
+                        },
                     },
-                    "required": ["coin_symbol"]
-                }
-            }
+                    "required": ["coin_symbol"],
+                },
+            },
         ]
-    
+
     async def execute(
-        self,
-        method: str,
-        parameters: Dict[str, Any],
-        context: Dict[str, Any] = None
+        self, method: str, parameters: Dict[str, Any], context: Dict[str, Any] = None
     ) -> Any:
         """Execute a tool method."""
         if method == "discover_coins":
@@ -71,13 +68,13 @@ class OSINTTools:
             return await self._search_social(parameters)
         else:
             raise ValueError(f"Unknown method: {method}")
-    
+
     async def _discover_coins(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Discover coins."""
         keywords = params["keywords"]
         min_confidence = params.get("min_confidence", 0.7)
         max_results = params.get("max_results", 10)
-        
+
         # Mock data - in production, scan Twitter, Reddit, Telegram, etc.
         return {
             "keywords": keywords,
@@ -90,35 +87,27 @@ class OSINTTools:
                     "confidence": 0.85,
                     "sources": ["twitter", "reddit"],
                     "mentions": 150,
-                    "sentiment": "positive"
+                    "sentiment": "positive",
                 }
             ],
-            "count": 1
+            "count": 1,
         }
-    
+
     async def _search_social(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Search social media."""
         coin_symbol = params["coin_symbol"]
         platforms = params.get("platforms", ["twitter", "reddit", "telegram"])
-        
+
         # Mock data - in production, use social media APIs
         return {
             "coin_symbol": coin_symbol,
             "results": {
-                "twitter": {
-                    "mentions": 500,
-                    "sentiment": "neutral",
-                    "trending": False
-                },
+                "twitter": {"mentions": 500, "sentiment": "neutral", "trending": False},
                 "reddit": {
                     "mentions": 200,
                     "sentiment": "positive",
-                    "top_subreddits": ["CryptoMoonShots", "CryptoCurrency"]
+                    "top_subreddits": ["CryptoMoonShots", "CryptoCurrency"],
                 },
-                "telegram": {
-                    "groups": 5,
-                    "members": 10000,
-                    "activity": "high"
-                }
-            }
+                "telegram": {"groups": 5, "members": 10000, "activity": "high"},
+            },
         }

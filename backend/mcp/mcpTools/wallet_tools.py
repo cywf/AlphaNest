@@ -7,7 +7,7 @@ from typing import Dict, Any, List
 
 class WalletTools:
     """Tools for blockchain wallet analysis."""
-    
+
     def get_schemas(self) -> List[Dict[str, Any]]:
         """Get tool schemas."""
         return [
@@ -19,17 +19,17 @@ class WalletTools:
                     "properties": {
                         "wallet_address": {
                             "type": "string",
-                            "description": "Blockchain wallet address"
+                            "description": "Blockchain wallet address",
                         },
                         "blockchain": {
                             "type": "string",
                             "description": "Blockchain network",
                             "enum": ["ETH", "BSC", "POLYGON", "AVAX"],
-                            "default": "ETH"
-                        }
+                            "default": "ETH",
+                        },
                     },
-                    "required": ["wallet_address"]
-                }
+                    "required": ["wallet_address"],
+                },
             },
             {
                 "name": "wallet.get_transactions",
@@ -39,24 +39,21 @@ class WalletTools:
                     "properties": {
                         "wallet_address": {
                             "type": "string",
-                            "description": "Blockchain wallet address"
+                            "description": "Blockchain wallet address",
                         },
                         "limit": {
                             "type": "integer",
                             "description": "Number of transactions to return",
-                            "default": 20
-                        }
+                            "default": 20,
+                        },
                     },
-                    "required": ["wallet_address"]
-                }
-            }
+                    "required": ["wallet_address"],
+                },
+            },
         ]
-    
+
     async def execute(
-        self,
-        method: str,
-        parameters: Dict[str, Any],
-        context: Dict[str, Any] = None
+        self, method: str, parameters: Dict[str, Any], context: Dict[str, Any] = None
     ) -> Any:
         """Execute a tool method."""
         if method == "analyze":
@@ -65,12 +62,12 @@ class WalletTools:
             return await self._get_transactions(parameters)
         else:
             raise ValueError(f"Unknown method: {method}")
-    
+
     async def _analyze(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze wallet."""
         wallet_address = params["wallet_address"]
         blockchain = params.get("blockchain", "ETH")
-        
+
         # Mock data - in production, use blockchain explorer API
         return {
             "wallet_address": wallet_address,
@@ -80,14 +77,14 @@ class WalletTools:
             "first_seen": "2023-01-15",
             "last_seen": "2025-11-19",
             "risk_score": 0.25,
-            "flags": []
+            "flags": [],
         }
-    
+
     async def _get_transactions(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Get transactions."""
         wallet_address = params["wallet_address"]
         limit = params.get("limit", 20)
-        
+
         # Mock data - in production, use blockchain explorer API
         return {
             "wallet_address": wallet_address,
@@ -97,8 +94,8 @@ class WalletTools:
                     "timestamp": "2025-11-19T00:00:00Z",
                     "value": 0.1,
                     "from": wallet_address if i % 2 == 0 else "0xother",
-                    "to": "0xother" if i % 2 == 0 else wallet_address
+                    "to": "0xother" if i % 2 == 0 else wallet_address,
                 }
                 for i in range(limit)
-            ]
+            ],
         }

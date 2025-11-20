@@ -21,11 +21,11 @@ CHAT_TOOLS = [
                 "min_profit_pct": {
                     "type": "number",
                     "description": "Minimum profit percentage threshold",
-                    "default": 0.5
-                }
+                    "default": 0.5,
+                },
             },
-            "required": ["symbol"]
-        }
+            "required": ["symbol"],
+        },
     },
     {
         "name": "clan_score_lookup",
@@ -33,13 +33,10 @@ CHAT_TOOLS = [
         "parameters": {
             "type": "object",
             "properties": {
-                "clan_id": {
-                    "type": "string",
-                    "description": "Clan identifier"
-                }
+                "clan_id": {"type": "string", "description": "Clan identifier"}
             },
-            "required": ["clan_id"]
-        }
+            "required": ["clan_id"],
+        },
     },
     {
         "name": "osint_coin_discovery",
@@ -50,16 +47,16 @@ CHAT_TOOLS = [
                 "keywords": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Keywords to search for"
+                    "description": "Keywords to search for",
                 },
                 "min_confidence": {
                     "type": "number",
                     "description": "Minimum confidence score (0-1)",
-                    "default": 0.7
-                }
+                    "default": 0.7,
+                },
             },
-            "required": ["keywords"]
-        }
+            "required": ["keywords"],
+        },
     },
     {
         "name": "scam_wallet_dossier",
@@ -69,16 +66,16 @@ CHAT_TOOLS = [
             "properties": {
                 "wallet_address": {
                     "type": "string",
-                    "description": "Blockchain wallet address"
+                    "description": "Blockchain wallet address",
                 },
                 "blockchain": {
                     "type": "string",
                     "description": "Blockchain network (ETH, BSC, etc.)",
-                    "default": "ETH"
-                }
+                    "default": "ETH",
+                },
             },
-            "required": ["wallet_address"]
-        }
+            "required": ["wallet_address"],
+        },
     },
     {
         "name": "shop_theme_generator",
@@ -89,15 +86,15 @@ CHAT_TOOLS = [
                 "style": {
                     "type": "string",
                     "description": "Theme style (cyberpunk, modern, minimal, etc.)",
-                    "enum": ["cyberpunk", "modern", "minimal", "vintage"]
+                    "enum": ["cyberpunk", "modern", "minimal", "vintage"],
                 },
                 "primary_color": {
                     "type": "string",
                     "description": "Primary color hex code",
-                }
+                },
             },
-            "required": ["style"]
-        }
+            "required": ["style"],
+        },
     },
     {
         "name": "user_onboarding_help",
@@ -108,18 +105,23 @@ CHAT_TOOLS = [
                 "step": {
                     "type": "string",
                     "description": "Current onboarding step",
-                    "enum": ["welcome", "setup_profile", "connect_wallet", "explore_features"]
+                    "enum": [
+                        "welcome",
+                        "setup_profile",
+                        "connect_wallet",
+                        "explore_features",
+                    ],
                 },
                 "user_level": {
                     "type": "string",
                     "description": "User experience level",
                     "enum": ["beginner", "intermediate", "advanced"],
-                    "default": "beginner"
-                }
+                    "default": "beginner",
+                },
             },
-            "required": ["step"]
-        }
-    }
+            "required": ["step"],
+        },
+    },
 ]
 
 

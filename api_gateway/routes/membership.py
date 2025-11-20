@@ -14,12 +14,14 @@ router = APIRouter(prefix="/api/membership", tags=["membership"])
 
 class CheckoutRequest(BaseModel):
     """Request model for checkout."""
+
     email: str
     plan: str = "monthly"
 
 
 class WebhookEvent(BaseModel):
     """Stripe webhook event model."""
+
     type: str
     data: dict
 
@@ -27,7 +29,7 @@ class WebhookEvent(BaseModel):
 @router.get("/")
 async def get_membership_info() -> dict:
     """Get membership information.
-    
+
     Returns:
         Dictionary with membership plans and pricing
     """
@@ -58,16 +60,16 @@ async def get_membership_info() -> dict:
 @router.post("/checkout")
 async def create_checkout_session(request: CheckoutRequest) -> dict:
     """Create Stripe checkout session.
-    
+
     Args:
         request: Checkout request with email and plan
-        
+
     Returns:
         Dictionary with checkout URL
     """
     # In production, create actual Stripe checkout session
     logger.info(f"Creating checkout session for {request.email}, plan: {request.plan}")
-    
+
     # Mock response for now
     return {
         "checkout_url": "https://checkout.stripe.com/pay/mock-session-id",
@@ -79,26 +81,26 @@ async def create_checkout_session(request: CheckoutRequest) -> dict:
 @router.post("/webhook")
 async def stripe_webhook(request: Request):
     """Handle Stripe webhook events.
-    
+
     Args:
         request: Webhook request from Stripe
-        
+
     Returns:
         Success response
     """
     try:
         payload = await request.body()
         signature = request.headers.get("stripe-signature")
-        
+
         # In production, verify webhook signature
         logger.info(f"Received webhook event (signature: {signature[:20]}...)")
-        
+
         # Parse event
         event_data = await request.json()
         event_type = event_data.get("type")
-        
+
         logger.info(f"Processing webhook event: {event_type}")
-        
+
         # Handle different event types
         if event_type == "checkout.session.completed":
             # Create/activate membership
@@ -106,9 +108,9 @@ async def stripe_webhook(request: Request):
         elif event_type == "customer.subscription.deleted":
             # Deactivate membership
             logger.info("Subscription cancelled, deactivating membership")
-        
+
         return {"status": "success"}
-        
+
     except Exception as e:
         logger.error(f"Error processing webhook: {e}")
         raise HTTPException(status_code=400, detail=str(e))
@@ -117,10 +119,10 @@ async def stripe_webhook(request: Request):
 @router.get("/status")
 async def check_membership_status(api_key: str) -> dict:
     """Check membership status for an API key.
-    
+
     Args:
         api_key: The API key to check
-        
+
     Returns:
         Dictionary with membership status
     """

@@ -9,7 +9,9 @@ import sys
 import os
 
 # Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(
+    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 
 from arbitrage_engine.engine import ArbitrageEngine
 from ..auth import MembershipRequired, optional_api_key
@@ -34,13 +36,13 @@ def get_engine() -> ArbitrageEngine:
 @router.get("/demo")
 async def get_demo_data() -> List[Dict]:
     """Get demo arbitrage data (no authentication required).
-    
+
     Returns:
         List of demo arbitrage opportunities
     """
     demo_engine = ArbitrageEngine(demo_mode=True)
     opportunities = demo_engine.get_demo_data()
-    
+
     return [
         {
             "symbol": opp.symbol,
@@ -64,11 +66,11 @@ async def get_opportunities(
     engine: ArbitrageEngine = Depends(get_engine),
 ) -> List[Dict]:
     """Get real-time arbitrage opportunities (requires membership).
-    
+
     Args:
         api_key: Verified API key with active membership
         engine: Arbitrage engine instance
-        
+
     Returns:
         List of arbitrage opportunities
     """
@@ -100,11 +102,11 @@ async def get_statistics(
     engine: ArbitrageEngine = Depends(get_engine),
 ) -> Dict:
     """Get arbitrage engine statistics (public endpoint).
-    
+
     Args:
         api_key: Optional API key
         engine: Arbitrage engine instance
-        
+
     Returns:
         Dictionary with engine statistics
     """

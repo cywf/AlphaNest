@@ -12,7 +12,7 @@ class KrakenConnector:
 
     def __init__(self, api_key: Optional[str] = None, api_secret: Optional[str] = None):
         """Initialize Kraken connector.
-        
+
         Args:
             api_key: Kraken API key (optional for public endpoints)
             api_secret: Kraken API secret (optional for public endpoints)
@@ -21,13 +21,13 @@ class KrakenConnector:
         self.api_secret = api_secret
         self.name = "Kraken"
         self.base_url = "https://api.kraken.com"
-        
+
     def normalize_symbol(self, symbol: str) -> str:
         """Normalize symbol to standard format.
-        
+
         Args:
             symbol: Exchange-specific symbol (e.g., XXBTZUSD)
-            
+
         Returns:
             Normalized symbol (e.g., BTC/USD)
         """
@@ -38,24 +38,24 @@ class KrakenConnector:
             "ZUSD": "USD",
             "ZUSDT": "USDT",
         }
-        
+
         for kraken_sym, std_sym in symbol_map.items():
             symbol = symbol.replace(kraken_sym, std_sym)
-        
+
         # Try to split common patterns
         for quote in ["USD", "USDT", "USDC", "EUR"]:
             if symbol.endswith(quote):
-                base = symbol[:-len(quote)]
+                base = symbol[: -len(quote)]
                 return f"{base}/{quote}"
-        
+
         return symbol
-    
+
     def get_ticker(self, symbol: str) -> Dict:
         """Get current price ticker for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
-            
+
         Returns:
             Dictionary with price data
         """
@@ -68,14 +68,14 @@ class KrakenConnector:
             "last": 0.0,
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_orderbook(self, symbol: str, depth: int = 5) -> Dict:
         """Get orderbook for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
             depth: Number of price levels to fetch
-            
+
         Returns:
             Dictionary with bids and asks
         """
@@ -87,10 +87,10 @@ class KrakenConnector:
             "asks": [],
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_trading_fees(self) -> Dict[str, float]:
         """Get trading fee structure.
-        
+
         Returns:
             Dictionary with maker and taker fees
         """
@@ -98,10 +98,10 @@ class KrakenConnector:
             "maker": 0.0016,  # 0.16%
             "taker": 0.0026,  # 0.26%
         }
-    
+
     def get_withdrawal_fees(self) -> Dict[str, float]:
         """Get withdrawal fee structure.
-        
+
         Returns:
             Dictionary with withdrawal fees per currency
         """

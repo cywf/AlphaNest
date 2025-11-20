@@ -12,7 +12,7 @@ class BybitConnector:
 
     def __init__(self, api_key: Optional[str] = None, api_secret: Optional[str] = None):
         """Initialize Bybit connector.
-        
+
         Args:
             api_key: Bybit API key (optional for public endpoints)
             api_secret: Bybit API secret (optional for public endpoints)
@@ -21,29 +21,29 @@ class BybitConnector:
         self.api_secret = api_secret
         self.name = "Bybit"
         self.base_url = "https://api.bybit.com"
-        
+
     def normalize_symbol(self, symbol: str) -> str:
         """Normalize symbol to standard format.
-        
+
         Args:
             symbol: Exchange-specific symbol (e.g., BTCUSDT)
-            
+
         Returns:
             Normalized symbol (e.g., BTC/USDT)
         """
         # Bybit uses concatenated pairs like BTCUSDT
         for quote in ["USDT", "USDC", "USD", "BTC", "ETH"]:
             if symbol.endswith(quote):
-                base = symbol[:-len(quote)]
+                base = symbol[: -len(quote)]
                 return f"{base}/{quote}"
         return symbol
-    
+
     def get_ticker(self, symbol: str) -> Dict:
         """Get current price ticker for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
-            
+
         Returns:
             Dictionary with price data
         """
@@ -56,14 +56,14 @@ class BybitConnector:
             "last": 0.0,
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_orderbook(self, symbol: str, depth: int = 5) -> Dict:
         """Get orderbook for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
             depth: Number of price levels to fetch
-            
+
         Returns:
             Dictionary with bids and asks
         """
@@ -75,10 +75,10 @@ class BybitConnector:
             "asks": [],
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_trading_fees(self) -> Dict[str, float]:
         """Get trading fee structure.
-        
+
         Returns:
             Dictionary with maker and taker fees
         """
@@ -86,10 +86,10 @@ class BybitConnector:
             "maker": 0.001,  # 0.1%
             "taker": 0.001,  # 0.1%
         }
-    
+
     def get_withdrawal_fees(self) -> Dict[str, float]:
         """Get withdrawal fee structure.
-        
+
         Returns:
             Dictionary with withdrawal fees per currency
         """

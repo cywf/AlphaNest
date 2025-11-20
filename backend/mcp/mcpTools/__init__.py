@@ -11,5 +11,5 @@ __all__ = [
     "ClanTools",
     "WalletTools",
     "NaughtyCoinTools",
-    "OSINTTools"
+    "OSINTTools",
 ]

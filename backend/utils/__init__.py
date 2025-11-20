@@ -5,7 +5,7 @@ from .vault_client import (
     vault_client,
     get_supabase_credentials,
     get_jwt_secret,
-    get_openai_api_key
+    get_openai_api_key,
 )
 
 __all__ = [
@@ -13,5 +13,5 @@ __all__ = [
     "vault_client",
     "get_supabase_credentials",
     "get_jwt_secret",
-    "get_openai_api_key"
+    "get_openai_api_key",
 ]

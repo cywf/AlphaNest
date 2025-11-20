@@ -7,7 +7,7 @@ from typing import Dict, Any, List
 
 class ClanTools:
     """Tools for Clan Warz game."""
-    
+
     def get_schemas(self) -> List[Dict[str, Any]]:
         """Get tool schemas."""
         return [
@@ -17,13 +17,10 @@ class ClanTools:
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "clan_id": {
-                            "type": "string",
-                            "description": "Clan identifier"
-                        }
+                        "clan_id": {"type": "string", "description": "Clan identifier"}
                     },
-                    "required": ["clan_id"]
-                }
+                    "required": ["clan_id"],
+                },
             },
             {
                 "name": "clan.get_leaderboard",
@@ -34,18 +31,15 @@ class ClanTools:
                         "limit": {
                             "type": "integer",
                             "description": "Number of clans to return",
-                            "default": 10
+                            "default": 10,
                         }
-                    }
-                }
-            }
+                    },
+                },
+            },
         ]
-    
+
     async def execute(
-        self,
-        method: str,
-        parameters: Dict[str, Any],
-        context: Dict[str, Any] = None
+        self, method: str, parameters: Dict[str, Any], context: Dict[str, Any] = None
     ) -> Any:
         """Execute a tool method."""
         if method == "get_score":
@@ -54,11 +48,11 @@ class ClanTools:
             return await self._get_leaderboard(parameters)
         else:
             raise ValueError(f"Unknown method: {method}")
-    
+
     async def _get_score(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Get clan score."""
         clan_id = params["clan_id"]
-        
+
         # Mock data - in production, fetch from database
         return {
             "clan_id": clan_id,
@@ -66,13 +60,13 @@ class ClanTools:
             "rank": 5,
             "members": 25,
             "wins": 100,
-            "losses": 20
+            "losses": 20,
         }
-    
+
     async def _get_leaderboard(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """Get leaderboard."""
         limit = params.get("limit", 10)
-        
+
         # Mock data - in production, fetch from database
         return {
             "clans": [

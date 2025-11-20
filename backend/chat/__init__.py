@@ -10,5 +10,5 @@ __all__ = [
     "ChatService",
     "ConversationStore",
     "CHAT_TOOLS",
-    "get_tool_schemas"
+    "get_tool_schemas",
 ]

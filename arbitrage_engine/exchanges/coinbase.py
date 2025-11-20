@@ -12,7 +12,7 @@ class CoinbaseConnector:
 
     def __init__(self, api_key: Optional[str] = None, api_secret: Optional[str] = None):
         """Initialize Coinbase connector.
-        
+
         Args:
             api_key: Coinbase API key (optional for public endpoints)
             api_secret: Coinbase API secret (optional for public endpoints)
@@ -21,24 +21,24 @@ class CoinbaseConnector:
         self.api_secret = api_secret
         self.name = "Coinbase"
         self.base_url = "https://api.coinbase.com"
-        
+
     def normalize_symbol(self, symbol: str) -> str:
         """Normalize symbol to standard format.
-        
+
         Args:
             symbol: Exchange-specific symbol (e.g., BTC-USD)
-            
+
         Returns:
             Normalized symbol (e.g., BTC/USD)
         """
         return symbol.replace("-", "/")
-    
+
     def get_ticker(self, symbol: str) -> Dict:
         """Get current price ticker for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
-            
+
         Returns:
             Dictionary with price data
         """
@@ -51,14 +51,14 @@ class CoinbaseConnector:
             "last": 0.0,
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_orderbook(self, symbol: str, depth: int = 5) -> Dict:
         """Get orderbook for a symbol.
-        
+
         Args:
             symbol: Trading pair symbol
             depth: Number of price levels to fetch
-            
+
         Returns:
             Dictionary with bids and asks
         """
@@ -70,10 +70,10 @@ class CoinbaseConnector:
             "asks": [],
             "timestamp": int(time.time() * 1000),
         }
-    
+
     def get_trading_fees(self) -> Dict[str, float]:
         """Get trading fee structure.
-        
+
         Returns:
             Dictionary with maker and taker fees
         """
@@ -81,10 +81,10 @@ class CoinbaseConnector:
             "maker": 0.004,  # 0.4%
             "taker": 0.006,  # 0.6%
         }
-    
+
     def get_withdrawal_fees(self) -> Dict[str, float]:
         """Get withdrawal fee structure.
-        
+
         Returns:
             Dictionary with withdrawal fees per currency
         """
