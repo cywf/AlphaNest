@@ -11,7 +11,11 @@ import { ArrowsDownUp, FunnelSimple, Play, Pause, Warning } from '@phosphor-icon
 import { motion } from 'framer-motion'
 import type { ScamWallet, WalletFilters, WalletSortField, WalletSortDirection, WalletRiskLevel } from './walletIntelTypes'
 
-export function WalletLeaderboard() {
+interface WalletLeaderboardProps {
+  onViewWallet?: (address: string) => void
+}
+
+export function WalletLeaderboard({ onViewWallet }: WalletLeaderboardProps) {
   const [wallets, setWallets] = useState<ScamWallet[]>([])
   const [filters, setFilters] = useState<WalletFilters>({})
   const [sortField, setSortField] = useState<WalletSortField>('scamScore')
@@ -300,7 +304,7 @@ export function WalletLeaderboard() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.02 }}
                     className="border-border/50 hover:bg-primary/5 transition-colors cursor-pointer"
-                    onClick={() => console.log('Navigate to wallet dossier:', wallet.address)}
+                    onClick={() => onViewWallet?.(wallet.address)}
                   >
                     <TableCell className="font-mono font-semibold">
                       #{index + 1}

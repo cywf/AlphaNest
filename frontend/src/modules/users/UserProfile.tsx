@@ -179,7 +179,7 @@ export function UserProfile({ onNavigateToShop, onNavigateToClan }: UserProfileP
               </div>
 
               <div className="space-y-2">
-                <Label>Shop Theme</Label>
+                <Label>Market Booth Theme</Label>
                 <div className="grid grid-cols-2 gap-3">
                   {Object.entries(SHOP_THEME_CONFIGS).map(([key, config]) => (
                     <button
@@ -293,7 +293,7 @@ export function UserProfile({ onNavigateToShop, onNavigateToClan }: UserProfileP
         >
           <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
             <Crown size={24} style={{ color: themeConfig.primaryColor }} />
-            Shop Theme Preview
+            Market Booth Theme Preview
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div
