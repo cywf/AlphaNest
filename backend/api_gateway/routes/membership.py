@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 import logging
 import os
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ async def get_membership_info() -> dict:
     }
 
 
-@router.post("/checkout")
+@router.post("/subscribe")
 async def create_checkout_session(request: CheckoutRequest) -> dict:
     """Create Stripe checkout session.
 
@@ -65,16 +66,32 @@ async def create_checkout_session(request: CheckoutRequest) -> dict:
         request: Checkout request with email and plan
 
     Returns:
-        Dictionary with checkout URL
+        Dictionary with checkout URL and session information
     """
-    # In production, create actual Stripe checkout session
+    # Validate plan
+    valid_plans = ["monthly"]
+    if request.plan not in valid_plans:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid plan: {request.plan}. Valid plans: {', '.join(valid_plans)}",
+        )
+
     logger.info(f"Creating checkout session for {request.email}, plan: {request.plan}")
 
+    # In production, create actual Stripe checkout session using Stripe SDK
+    # import stripe
+    # stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+    # session = stripe.checkout.Session.create(...)
+
     # Mock response for now
+    mock_session_id = f"cs_test_{int(time.time() * 1000)}"
+
     return {
-        "checkout_url": "https://checkout.stripe.com/pay/mock-session-id",
-        "session_id": "mock-session-id",
-        "message": "Checkout session created (mock)",
+        "checkout_url": f"https://checkout.stripe.com/pay/{mock_session_id}",
+        "session_id": mock_session_id,
+        "message": "Checkout session created (demo mode)",
+        "plan": request.plan,
+        "email": request.email,
     }
 
 

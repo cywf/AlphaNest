@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from .routes import arbitrage, membership
+from .routes import arbitrage, membership, wallet, analysis
 
 # Add backend to path for chat module
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -47,6 +47,8 @@ app.add_middleware(
 # Include routers
 app.include_router(arbitrage.router)
 app.include_router(membership.router)
+app.include_router(wallet.router)
+app.include_router(analysis.router)
 
 # Include chat router if available
 if CHAT_ENABLED:
