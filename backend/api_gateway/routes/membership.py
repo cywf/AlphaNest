@@ -2,10 +2,18 @@
 Membership and payment routes.
 """
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 import logging
 import os
+import sys
+
+# Add backend to path for database module
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+from database import get_db, User, Subscription
+from .auth import get_current_user_from_token
 
 logger = logging.getLogger(__name__)
 
@@ -79,11 +87,12 @@ async def create_checkout_session(request: CheckoutRequest) -> dict:
 
 
 @router.post("/webhook")
-async def stripe_webhook(request: Request):
+async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     """Handle Stripe webhook events.
 
     Args:
         request: Webhook request from Stripe
+        db: Database session
 
     Returns:
         Success response
@@ -93,7 +102,7 @@ async def stripe_webhook(request: Request):
         signature = request.headers.get("stripe-signature")
 
         # In production, verify webhook signature
-        logger.info(f"Received webhook event (signature: {signature[:20]}...)")
+        logger.info(f"Received webhook event (signature: {signature[:20] if signature else 'none'}...)")
 
         # Parse event
         event_data = await request.json()
@@ -103,11 +112,56 @@ async def stripe_webhook(request: Request):
 
         # Handle different event types
         if event_type == "checkout.session.completed":
-            # Create/activate membership
-            logger.info("Checkout completed, activating membership")
+            # Extract user email and subscription info
+            session = event_data.get("data", {}).get("object", {})
+            customer_email = session.get("customer_email")
+            stripe_customer_id = session.get("customer")
+            stripe_subscription_id = session.get("subscription")
+            
+            if customer_email:
+                # Find or create user
+                user = db.query(User).filter(User.email == customer_email).first()
+                
+                if user:
+                    # Update user's stripe customer ID
+                    user.stripe_customer_id = stripe_customer_id
+                    
+                    # Activate subscription
+                    subscription = db.query(Subscription).filter(
+                        Subscription.user_id == user.id
+                    ).first()
+                    
+                    if subscription:
+                        subscription.status = "active"
+                        subscription.stripe_subscription_id = stripe_subscription_id
+                    else:
+                        # Create new subscription
+                        import uuid
+                        subscription = Subscription(
+                            id=str(uuid.uuid4()),
+                            user_id=user.id,
+                            status="active",
+                            plan_type="monthly",
+                            stripe_subscription_id=stripe_subscription_id,
+                        )
+                        db.add(subscription)
+                    
+                    db.commit()
+                    logger.info(f"Subscription activated for user: {user.username}")
+                    
         elif event_type == "customer.subscription.deleted":
-            # Deactivate membership
-            logger.info("Subscription cancelled, deactivating membership")
+            # Deactivate subscription
+            subscription_id = event_data.get("data", {}).get("object", {}).get("id")
+            
+            if subscription_id:
+                subscription = db.query(Subscription).filter(
+                    Subscription.stripe_subscription_id == subscription_id
+                ).first()
+                
+                if subscription:
+                    subscription.status = "cancelled"
+                    db.commit()
+                    logger.info(f"Subscription cancelled for user_id: {subscription.user_id}")
 
         return {"status": "success"}
 
@@ -117,19 +171,50 @@ async def stripe_webhook(request: Request):
 
 
 @router.get("/status")
-async def check_membership_status(api_key: str) -> dict:
-    """Check membership status for an API key.
+async def check_membership_status(
+    api_key: str = None,
+    authorization: str = None,
+    db: Session = Depends(get_db)
+) -> dict:
+    """Check membership status.
 
     Args:
-        api_key: The API key to check
+        api_key: Optional API key
+        authorization: Optional authorization header
+        db: Database session
 
     Returns:
         Dictionary with membership status
     """
-    # In production, check database
+    user = None
+    
+    # Try to get user from JWT token
+    if authorization:
+        user = await get_current_user_from_token(authorization, db)
+    
+    # Try to get user from API key
+    if not user and api_key:
+        user = db.query(User).filter(User.api_key == api_key).first()
+    
+    if not user:
+        return {
+            "api_key": api_key[:8] + "..." if api_key else None,
+            "active": False,
+            "plan": None,
+            "expires_at": None,
+        }
+    
+    # Get subscription
+    subscription = db.query(Subscription).filter(
+        Subscription.user_id == user.id
+    ).first()
+    
     return {
-        "api_key": api_key[:8] + "...",
-        "active": False,
-        "plan": None,
-        "expires_at": None,
+        "username": user.username,
+        "api_key": user.api_key[:8] + "..." if user.api_key else None,
+        "active": subscription.status == "active" if subscription else False,
+        "plan": subscription.plan_type if subscription else None,
+        "status": subscription.status if subscription else None,
+        "expires_at": subscription.next_billing_date if subscription else None,
     }
+
