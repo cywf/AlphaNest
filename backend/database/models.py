@@ -134,8 +134,8 @@ class NFTItem(Base):
     favorites = Column(Integer, default=0)
     sales = Column(Integer, default=0)
     
-    # Metadata as JSON - renamed to avoid conflict with SQLAlchemy metadata
-    nft_metadata = Column(JSON, default={})
+    # NFT attributes and transaction history as JSON
+    nft_attributes = Column(JSON, default={})
     transaction_history = Column(JSON, default=[])
     
     created_at = Column(BigInteger, nullable=False)  # Timestamp in milliseconds

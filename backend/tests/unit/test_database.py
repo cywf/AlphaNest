@@ -301,7 +301,7 @@ class TestNFTItemModel:
             owner_id=user.id,
             booth_id=booth.id,
             featured=True,
-            nft_metadata={"collection": "TestCollection"},
+            nft_attributes={"collection": "TestCollection"},
             transaction_history=[],
             created_at=int(datetime.now().timestamp() * 1000),
         )

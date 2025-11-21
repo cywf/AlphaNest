@@ -102,7 +102,8 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         signature = request.headers.get("stripe-signature")
 
         # In production, verify webhook signature
-        logger.info(f"Received webhook event (signature: {signature[:20] if signature else 'none'}...)")
+        has_signature = signature is not None
+        logger.info(f"Received webhook event (has_signature: {has_signature})")
 
         # Parse event
         event_data = await request.json()

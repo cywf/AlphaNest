@@ -14,7 +14,7 @@ class NFTItemCreate(BaseModel):
     price: float = Field(..., gt=0)
     rarity: str = Field(default="common", pattern="^(common|rare|epic|legendary)$")
     featured: bool = False
-    nft_metadata: Dict[str, Any] = {}
+    nft_attributes: Dict[str, Any] = {}
 
 
 class NFTItemResponse(BaseModel):
@@ -34,7 +34,7 @@ class NFTItemResponse(BaseModel):
     views: int
     favorites: int
     sales: int
-    nft_metadata: Dict[str, Any]
+    nft_attributes: Dict[str, Any]
     transaction_history: List[Dict[str, Any]]
     created_at: int
     

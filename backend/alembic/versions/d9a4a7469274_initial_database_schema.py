@@ -103,7 +103,7 @@ def upgrade() -> None:
         sa.Column('views', sa.Integer, default=0),
         sa.Column('favorites', sa.Integer, default=0),
         sa.Column('sales', sa.Integer, default=0),
-        sa.Column('nft_metadata', sa.JSON, default={}),
+        sa.Column('nft_attributes', sa.JSON, default={}),
         sa.Column('transaction_history', sa.JSON, default=[]),
         sa.Column('created_at', sa.BigInteger, nullable=False),
     )

@@ -301,7 +301,7 @@ def seed_nft_items(db, users, booths):
                 views=0,
                 favorites=0,
                 sales=0,
-                nft_metadata=template["metadata"],
+                nft_attributes=template["metadata"],
                 transaction_history=[
                     {
                         "id": f"tx_{nft_id}",

@@ -284,7 +284,7 @@ async def create_nft(
         owner_id=user.id,
         booth_id=booth.id,
         featured=nft_data.featured,
-        nft_metadata=nft_data.nft_metadata,
+        nft_attributes=nft_data.nft_attributes,
         transaction_history=[
             {
                 "id": f"tx_{nft_id}",

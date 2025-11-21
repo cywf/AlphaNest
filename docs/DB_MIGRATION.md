@@ -96,7 +96,7 @@ Stores NFT items in the marketplace.
 | views | Integer | View count |
 | favorites | Integer | Favorites count |
 | sales | Integer | Sales count |
-| nft_metadata | JSON | Additional metadata |
+| nft_attributes | JSON | NFT attributes and properties |
 | transaction_history | JSON | Transaction history array |
 | created_at | BigInteger | Creation timestamp (milliseconds) |
 
