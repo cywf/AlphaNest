@@ -14,6 +14,11 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/wallet", tags=["wallet"])
 
+# Constants
+MOCK_TX_HASH_MASK = 0xFFFFFF  # Mask for address hashing in mock transaction IDs
+MOCK_SIGNATURE_HASH_BITS = 0xFFFFFFFFFFFFFFFF  # Hash bits for mock signatures
+MOCK_SIGNATURE_PADDING_LENGTH = 114  # Padding length for Ethereum signatures
+
 
 class TransactionRequest(BaseModel):
     """Request model for transaction signing."""
@@ -85,9 +90,7 @@ async def sign_transaction(
 
     # In production, this would use web3.py to sign the transaction
     # For now, return a mock success response
-    mock_tx_id = (
-        f"0x{int(time.time() * 1000):x}{hash(request.from_address) & 0xFFFFFF:06x}"
-    )
+    mock_tx_id = f"0x{int(time.time() * 1000):x}{hash(request.from_address) & MOCK_TX_HASH_MASK:06x}"
 
     return {
         "status": "signed",
@@ -116,7 +119,10 @@ async def sign_message(
     logger.info(f"Sign message request from {request.address}")
 
     # In production, this would verify the signature from MetaMask
-    mock_signature = f"0x{hash(request.message) & 0xFFFFFFFFFFFFFFFF:016x}{'0' * 114}"
+    mock_signature = (
+        f"0x{hash(request.message) & MOCK_SIGNATURE_HASH_BITS:016x}"
+        f"{'0' * MOCK_SIGNATURE_PADDING_LENGTH}"
+    )
 
     return {
         "status": "signed",
@@ -190,9 +196,7 @@ async def send_nft(
     )
 
     # In production, this would create and broadcast a transfer transaction
-    mock_tx_id = (
-        f"0x{int(time.time() * 1000):x}{hash(request.to_address) & 0xFFFFFF:06x}"
-    )
+    mock_tx_id = f"0x{int(time.time() * 1000):x}{hash(request.to_address) & MOCK_TX_HASH_MASK:06x}"
 
     return {
         "status": "success",
@@ -225,9 +229,7 @@ async def trade_on_arbscan(
     )
 
     # In production, this would execute the arbitrage trade
-    mock_tx_id = (
-        f"0x{int(time.time() * 1000):x}{hash(request.wallet_address) & 0xFFFFFF:06x}"
-    )
+    mock_tx_id = f"0x{int(time.time() * 1000):x}{hash(request.wallet_address) & MOCK_TX_HASH_MASK:06x}"
 
     return {
         "status": "executed",

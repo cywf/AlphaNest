@@ -15,20 +15,10 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/analysis", tags=["analysis"])
 
-
-class AnalysisItem(BaseModel):
-    """Market analysis item model."""
-
-    id: str
-    timestamp: datetime
-    category: str
-    title: str
-    summary: str
-    tags: List[str]
-    severity: str
-    deep_link: Dict[str, Any]
-    metadata: Dict[str, Any]
-
+# Configuration constants
+FEED_ITEM_TIME_OFFSET_SECONDS = 30  # Time offset between feed items
+DEFAULT_FEED_COUNT = 10  # Default number of items in feed
+MAX_FEED_COUNT = 50  # Maximum number of items in feed
 
 # Constants for generating analysis items
 COIN_SYMBOLS = ["BTC", "ETH", "DOGE", "SHIB", "PEPE", "BONK", "FLOKI", "WOJAK"]
@@ -219,7 +209,7 @@ def generate_analysis_item() -> AnalysisItem:
 
 @router.get("/feed")
 async def get_analysis_feed(
-    count: int = 10,
+    count: int = DEFAULT_FEED_COUNT,
     api_key: Optional[str] = Depends(optional_api_key),
 ) -> List[AnalysisItem]:
     """Get market analysis feed.
@@ -232,7 +222,7 @@ async def get_analysis_feed(
         List of market analysis items
     """
     # Limit count to reasonable range
-    count = min(max(count, 1), 50)
+    count = min(max(count, 1), MAX_FEED_COUNT)
 
     logger.info(f"Generating analysis feed with {count} items")
 
@@ -241,7 +231,9 @@ async def get_analysis_feed(
     for i in range(count):
         item = generate_analysis_item()
         # Adjust timestamp to create a feed history
-        item.timestamp = datetime.fromtimestamp(datetime.now().timestamp() - (i * 30))
+        item.timestamp = datetime.fromtimestamp(
+            datetime.now().timestamp() - (i * FEED_ITEM_TIME_OFFSET_SECONDS)
+        )
         items.append(item)
 
     return items
