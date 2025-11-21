@@ -1,5 +1,5 @@
 {
-    "name": "spark-template",
+    "name": "alphanest",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -9,7 +9,8 @@
         "build": "tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "preview:gh-pages": "BASE_URL=/AlphaNest vite preview"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",

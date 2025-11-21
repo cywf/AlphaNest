@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPHA-N3ST</title>
+    <script>
+        // GitHub Pages SPA redirect handler
+        // This script takes the current URL and redirects to the index.html
+        // with the path as a query parameter that the app can handle
+        (function() {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect != location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+        
+        // Alternative: Simple redirect to base with path preserved
+        var pathSegmentsToKeep = 1; // Keep /AlphaNest
+        var path = window.location.pathname.split('/').slice(0, pathSegmentsToKeep + 1).join('/') + '/';
+        var fullPath = window.location.pathname.replace(path, '');
+        
+        // Redirect to index.html with the path
+        window.location.href = path + (fullPath ? '#' + fullPath : '');
+    </script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'JetBrains Mono', monospace; background: #000; color: #0ff;">
+        <p>Redirecting to ALPHA-N3ST...</p>
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
-import { API_BASE, DEFAULT_HEADERS } from '@/config/api'
+import { API_BASE, DEFAULT_HEADERS, IS_DEMO_MODE } from '@/config/api'
 import type { ArbitrageOpportunity, Exchange } from '@/types/arbitrage'
 import { CRYPTOCURRENCIES } from '@/types/arbitrage'
+import { generateArbitrageOpportunities } from './arbitrage'
 
 // Build helper maps once so repeated requests stay cheap and predictable.
 const CRYPTO_BY_SYMBOL = new Map(CRYPTOCURRENCIES.map((coin) => [coin.symbol, coin]))
@@ -84,9 +85,21 @@ function mapApiOpportunity(payload: ApiArbitrageOpportunity): ArbitrageOpportuni
 export async function fetchArbitrageOpportunities(
   enabledExchanges: Exchange[],
 ): Promise<ArbitrageOpportunity[]> {
-  const data = await fetchJson<ApiArbitrageOpportunity[]>('/api/arbitrage/demo')
-  const allowed = new Set(enabledExchanges)
-  return data
-    .map(mapApiOpportunity)
-    .filter((opp) => allowed.has(opp.buyExchange) && allowed.has(opp.sellExchange))
+  // If in demo mode, always use mock data
+  if (IS_DEMO_MODE) {
+    console.log('[API] Running in demo mode - using mock data');
+    return generateArbitrageOpportunities(enabledExchanges);
+  }
+  
+  // Otherwise try to fetch from API
+  try {
+    const data = await fetchJson<ApiArbitrageOpportunity[]>('/api/arbitrage/demo')
+    const allowed = new Set(enabledExchanges)
+    return data
+      .map(mapApiOpportunity)
+      .filter((opp) => allowed.has(opp.buyExchange) && allowed.has(opp.sellExchange))
+  } catch (error) {
+    console.warn('[API] Failed to fetch from API, falling back to mock data', error);
+    return generateArbitrageOpportunities(enabledExchanges);
+  }
 }

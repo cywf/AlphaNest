@@ -68,6 +68,9 @@ docker compose up -d
 - 🐳 **Docker Support**: Easy deployment with Docker and docker-compose
 - ☁️ **AWS Ready**: Terraform infrastructure for cloud deployment
 - 🔄 **CI/CD**: Automated builds, tests, and deployments via GitHub Actions
+- 🗄️ **PostgreSQL Database**: Persistent storage for users, trades, and marketplace data
+- 🔐 **JWT Authentication**: Secure token-based authentication with bcrypt password hashing
+- 🎨 **NFT Marketplace**: User booths with customizable themes and digital asset trading
 
 ## 📊 Architecture Diagrams
 
@@ -103,15 +106,98 @@ graph TB
     
     subgraph "Data Layer"
         Redis[(🔴 Redis Cache)]
+        PostgreSQL[(🐘 PostgreSQL Database)]
     end
     
     WebUI --> Gateway
     Gateway --> Engine
     Worker --> Engine
     Engine --> Redis
+    Gateway --> PostgreSQL
 ```
 
 [View detailed infrastructure diagram →](mermaid/infrastructure_overview.mmd)
+
+## 🗄️ Database
+
+AlphaNest uses **PostgreSQL** as its primary database for persistent data storage, managed with **SQLAlchemy ORM** and **Alembic** for migrations.
+
+### Database Features
+
+- **User Management**: Store user accounts, credentials, and API keys
+- **Subscriptions**: Track membership status and Stripe integration
+- **Trade History**: Log all arbitrage opportunities and executed trades
+- **NFT Marketplace**: Persist market booths and digital assets
+- **Data Integrity**: Foreign key constraints and cascade deletes
+- **Automatic Migrations**: Alembic handles schema updates on deployment
+
+### Quick Setup
+
+```bash
+# Start the database with the full stack
+docker compose up -d
+
+# Or start just the database
+docker compose up -d db
+
+# Run migrations manually
+cd backend
+alembic upgrade head
+
+# Seed demo data
+python database/seed.py
+```
+
+### Database Schema
+
+The database includes 5 main tables:
+- **users** - User accounts and authentication
+- **subscriptions** - Membership and billing information
+- **trades** - Arbitrage trade history
+- **market_booths** - NFT marketplace booths
+- **nft_items** - Digital assets and collectibles
+
+### Demo Users
+
+Three demo users are automatically created:
+
+| Username | Email | Password | API Key |
+|----------|-------|----------|---------|
+| CYWF | cywf@demo.alphanest.io | demo123 | demo_cywf_key_12345 |
+| NeonTrader | neontrader@demo.alphanest.io | demo123 | demo_neon_key_67890 |
+| CyberNinja | cyberninja@demo.alphanest.io | demo123 | demo_ninja_key_11111 |
+
+Each user has a customized market booth with 5 NFT items.
+
+### API Endpoints
+
+**Authentication:**
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login and receive JWT token
+- `GET /api/auth/me` - Get current user info
+
+**Marketplace:**
+- `GET /api/market/booths` - List all booths
+- `GET /api/market/booths/{booth_id}` - Get booth details
+- `POST /api/market/booths` - Create booth (authenticated)
+- `GET /api/market/nft` - List NFTs
+- `POST /api/market/nft` - Create NFT (authenticated)
+- `DELETE /api/market/nft/{nft_id}` - Delete NFT (authenticated)
+
+**Membership:**
+- `GET /api/membership/status` - Check subscription status
+- `POST /api/membership/checkout` - Create Stripe checkout
+- `POST /api/membership/webhook` - Handle Stripe webhooks
+
+### Documentation
+
+For detailed database documentation, see:
+- **[DB_MIGRATION.md](../docs/DB_MIGRATION.md)** - Complete database guide
+  - Schema documentation
+  - Migration procedures
+  - Backup and restore
+  - Troubleshooting
+  - Security best practices
 
 ## Live Codebase Mindmap
 Auto-generated on each push: **repo-map.html** (via GitHub Pages and CI artifact).
