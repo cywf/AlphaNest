@@ -7,7 +7,7 @@ from datetime import datetime
 
 class NFTItemCreate(BaseModel):
     """Schema for creating an NFT item."""
-    
+
     name: str = Field(..., min_length=1, max_length=255)
     description: str = ""
     image_url: str = "🎨"
@@ -19,7 +19,7 @@ class NFTItemCreate(BaseModel):
 
 class NFTItemResponse(BaseModel):
     """Schema for NFT item response."""
-    
+
     id: str
     name: str
     description: str
@@ -37,14 +37,14 @@ class NFTItemResponse(BaseModel):
     nft_attributes: Dict[str, Any]
     transaction_history: List[Dict[str, Any]]
     created_at: int
-    
+
     class Config:
         from_attributes = True
 
 
 class MarketBoothCreate(BaseModel):
     """Schema for creating a market booth."""
-    
+
     bio: str = ""
     theme: str = Field(default="cyan", pattern="^(cyan|magenta|gold|glitch)$")
     layout: str = Field(default="grid", pattern="^(grid|gallery|terminal)$")
@@ -52,7 +52,7 @@ class MarketBoothCreate(BaseModel):
 
 class MarketBoothUpdate(BaseModel):
     """Schema for updating a market booth."""
-    
+
     bio: Optional[str] = None
     theme: Optional[str] = Field(None, pattern="^(cyan|magenta|gold|glitch)$")
     layout: Optional[str] = Field(None, pattern="^(grid|gallery|terminal)$")
@@ -60,7 +60,7 @@ class MarketBoothUpdate(BaseModel):
 
 class MarketBoothResponse(BaseModel):
     """Schema for market booth response."""
-    
+
     id: str
     user_id: str
     username: str
@@ -78,6 +78,6 @@ class MarketBoothResponse(BaseModel):
     created_at: datetime
     updated_at: Optional[datetime]
     listings: List[NFTItemResponse] = []
-    
+
     class Config:
         from_attributes = True

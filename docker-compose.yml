@@ -37,6 +37,7 @@ services:
       - ./backend/.env
     environment:
       - REDIS_URL=redis://redis:6379
+      - DEMO_MODE=${DEMO_MODE:-true}
     depends_on:
       - redis
     restart: unless-stopped

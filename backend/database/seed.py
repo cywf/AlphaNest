@@ -45,7 +45,7 @@ def seed_demo_users(db):
             "api_key": "demo_ninja_key_11111",
         },
     ]
-    
+
     users = []
     for user_data in demo_users_data:
         # Check if user exists
@@ -54,7 +54,7 @@ def seed_demo_users(db):
             print(f"User {user_data['username']} already exists, skipping...")
             users.append(existing)
             continue
-        
+
         user = User(
             id=str(uuid.uuid4()),
             username=user_data["username"],
@@ -67,7 +67,7 @@ def seed_demo_users(db):
         db.add(user)
         users.append(user)
         print(f"Created user: {user.username}")
-    
+
     db.commit()
     return users
 
@@ -76,11 +76,13 @@ def seed_subscriptions(db, users):
     """Seed subscriptions for demo users."""
     for user in users:
         # Check if subscription exists
-        existing = db.query(Subscription).filter(Subscription.user_id == user.id).first()
+        existing = (
+            db.query(Subscription).filter(Subscription.user_id == user.id).first()
+        )
         if existing:
             print(f"Subscription for {user.username} already exists, skipping...")
             continue
-        
+
         subscription = Subscription(
             id=str(uuid.uuid4()),
             user_id=user.id,
@@ -89,7 +91,7 @@ def seed_subscriptions(db, users):
         )
         db.add(subscription)
         print(f"Created subscription for: {user.username}")
-    
+
     db.commit()
 
 
@@ -103,12 +105,16 @@ def seed_market_booths(db, users):
             print(f"Booth for {user.username} already exists, skipping...")
             booths.append(existing)
             continue
-        
+
         booth = MarketBooth(
             id=str(uuid.uuid4()),
             user_id=user.id,
             bio=f"Welcome to {user.username}'s Market Booth - Trading digital assets in the neon grid",
-            theme="cyan" if user.username == "CYWF" else "magenta" if user.username == "NeonTrader" else "gold",
+            theme=(
+                "cyan"
+                if user.username == "CYWF"
+                else "magenta" if user.username == "NeonTrader" else "gold"
+            ),
             layout="grid",
             popularity=85 if user.username == "CYWF" else 92,
             reputation=88 if user.username == "CYWF" else 95,
@@ -121,7 +127,7 @@ def seed_market_booths(db, users):
         db.add(booth)
         booths.append(booth)
         print(f"Created booth for: {user.username}")
-    
+
     db.commit()
     return booths
 
@@ -272,20 +278,20 @@ def seed_nft_items(db, users, booths):
             },
         ],
     }
-    
+
     for user, booth in zip(users, booths):
         templates = nft_templates.get(user.username, [])
-        
+
         for idx, template in enumerate(templates):
             nft_id = f"nft_{user.id}_{idx}"
-            
+
             # Check if NFT exists
             existing = db.query(NFTItem).filter(NFTItem.id == nft_id).first()
             if existing:
                 continue
-            
+
             timestamp = int(datetime.now().timestamp() * 1000)
-            
+
             nft = NFTItem(
                 id=nft_id,
                 name=template["name"],
@@ -316,35 +322,35 @@ def seed_nft_items(db, users, booths):
             )
             db.add(nft)
             print(f"Created NFT: {nft.name} for {user.username}")
-    
+
     db.commit()
 
 
 def main():
     """Main seed function."""
     print("Starting database seed...")
-    
+
     db = SessionLocal()
-    
+
     try:
         # Seed users
         print("\n=== Seeding Users ===")
         users = seed_demo_users(db)
-        
+
         # Seed subscriptions
         print("\n=== Seeding Subscriptions ===")
         seed_subscriptions(db, users)
-        
+
         # Seed market booths
         print("\n=== Seeding Market Booths ===")
         booths = seed_market_booths(db, users)
-        
+
         # Seed NFT items
         print("\n=== Seeding NFT Items ===")
         seed_nft_items(db, users, booths)
-        
+
         print("\n✅ Database seeding completed successfully!")
-        
+
     except Exception as e:
         print(f"\n❌ Error seeding database: {e}")
         db.rollback()
