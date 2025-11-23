@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from .routes import arbitrage, membership, auth, market
+from .routes import arbitrage, membership, auth, market, wallet, analysis
 
 # Add backend to path for chat module
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))

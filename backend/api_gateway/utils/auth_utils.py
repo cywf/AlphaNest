@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status
 
 # Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 
 # JWT settings
 SECRET_KEY = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")

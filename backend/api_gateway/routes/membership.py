@@ -14,7 +14,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from database import get_db, User, Subscription
-from .auth import get_current_user_from_token
+from ..auth import get_current_user_from_token
 
 logger = logging.getLogger(__name__)
 
