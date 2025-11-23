@@ -15,7 +15,7 @@ DATABASE_URL = os.getenv(
     f"{os.getenv('DB_PASSWORD', 'changeme')}@"
     f"{os.getenv('DB_HOST', 'db')}:"
     f"{os.getenv('DB_PORT', '5432')}/"
-    f"{os.getenv('DB_NAME', 'alphanest')}"
+    f"{os.getenv('DB_NAME', 'alphanest')}",
 )
 
 # Create engine
@@ -34,7 +34,7 @@ Base = declarative_base()
 
 def get_db():
     """Dependency for FastAPI routes to get database session.
-    
+
     Yields:
         Database session that will be automatically closed after use
     """
@@ -47,11 +47,12 @@ def get_db():
 
 def init_db():
     """Initialize database - create all tables.
-    
+
     This is called during application startup.
     """
     try:
         from . import models  # Import models to register them
+
         Base.metadata.create_all(bind=engine)
         logger.info("Database initialized successfully")
     except Exception as e:

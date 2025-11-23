@@ -24,7 +24,7 @@ database_url = os.getenv(
     f"{os.getenv('DB_PASSWORD', 'alphanest_password')}@"
     f"{os.getenv('DB_HOST', 'db')}:"
     f"{os.getenv('DB_PORT', '5432')}/"
-    f"{os.getenv('DB_NAME', 'alphanest')}"
+    f"{os.getenv('DB_NAME', 'alphanest')}",
 )
 config.set_main_option("sqlalchemy.url", database_url)
 
@@ -84,9 +84,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

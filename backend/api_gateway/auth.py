@@ -19,30 +19,29 @@ logger = logging.getLogger(__name__)
 
 
 async def get_current_user_from_token(
-    authorization: Optional[str] = Header(None),
-    db: Session = Depends(get_db)
+    authorization: Optional[str] = Header(None), db: Session = Depends(get_db)
 ) -> Optional[User]:
     """Get current user from JWT token.
-    
+
     Args:
         authorization: Authorization header with Bearer token
         db: Database session
-        
+
     Returns:
         User object if authenticated, None otherwise
     """
     if not authorization or not authorization.startswith("Bearer "):
         return None
-    
+
     token = authorization.split(" ")[1]
-    
+
     try:
         payload = decode_access_token(token)
         user_id = payload.get("sub")
-        
+
         if not user_id:
             return None
-        
+
         user = db.query(User).filter(User.id == user_id).first()
         return user
     except HTTPException:
@@ -50,8 +49,7 @@ async def get_current_user_from_token(
 
 
 async def verify_api_key(
-    x_api_key: Optional[str] = Header(None),
-    db: Session = Depends(get_db)
+    x_api_key: Optional[str] = Header(None), db: Session = Depends(get_db)
 ) -> str:
     """Verify API key from request header.
 
@@ -74,16 +72,16 @@ async def verify_api_key(
     # In demo mode, allow any key
     if os.getenv("DEMO_MODE", "false").lower() == "true":
         return x_api_key
-    
+
     # Check database for API key
     user = db.query(User).filter(User.api_key == x_api_key).first()
-    
+
     if not user:
         raise HTTPException(
             status_code=403,
             detail="Invalid API key",
         )
-    
+
     if not user.is_active:
         raise HTTPException(
             status_code=403,
@@ -94,8 +92,7 @@ async def verify_api_key(
 
 
 async def optional_api_key(
-    x_api_key: Optional[str] = Header(None),
-    db: Session = Depends(get_db)
+    x_api_key: Optional[str] = Header(None), db: Session = Depends(get_db)
 ) -> Optional[str]:
     """Optionally verify API key.
 
@@ -126,11 +123,12 @@ def check_membership(user: User, db: Session) -> bool:
         True if membership is active, False otherwise
     """
     # Check for active subscription
-    subscription = db.query(Subscription).filter(
-        Subscription.user_id == user.id,
-        Subscription.status == "active"
-    ).first()
-    
+    subscription = (
+        db.query(Subscription)
+        .filter(Subscription.user_id == user.id, Subscription.status == "active")
+        .first()
+    )
+
     return subscription is not None
 
 
@@ -141,7 +139,7 @@ class MembershipRequired:
         self,
         x_api_key: Optional[str] = Header(None),
         authorization: Optional[str] = Header(None),
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
     ) -> User:
         """Verify membership is active.
 
@@ -157,21 +155,21 @@ class MembershipRequired:
             HTTPException: If membership is not active or user not found
         """
         user = None
-        
+
         # Try to get user from JWT token
         if authorization:
             user = await get_current_user_from_token(authorization, db)
-        
+
         # Try to get user from API key
         if not user and x_api_key:
             user = db.query(User).filter(User.api_key == x_api_key).first()
-        
+
         if not user:
             raise HTTPException(
                 status_code=401,
                 detail="Authentication required",
             )
-        
+
         if not check_membership(user, db):
             raise HTTPException(
                 status_code=402,
@@ -179,4 +177,3 @@ class MembershipRequired:
             )
 
         return user
-

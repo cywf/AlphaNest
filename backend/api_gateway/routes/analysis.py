@@ -2,6 +2,8 @@
 Market analysis feed API routes.
 """
 
+from __future__ import annotations
+
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
